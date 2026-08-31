@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informační systémy a databáze — Interaktivní kurz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1a56db;--blue-h:#1d4ed8;--blue-50:#eff6ff;--blue-100:#dbeafe;--blue-200:#bfdbfe;--blue-dark:#1e40af;--blue-text:#042c53;
+  --bg:#f0f4ff;--white:#fff;--text:#111827;--sec:#6b7280;--hint:#9ca3af;
+  --border:#dbeafe;--border2:#bfdbfe;
+  --green-bg:#f0fdf4;--green-b:#bbf7d0;--green-t:#14532d;--green-m:#16a34a;
+  --amber-bg:#fffbeb;--amber-b:#fde68a;--amber-t:#78350f;--amber-m:#d97706;
+  --red-bg:#fef2f2;--red-b:#fecaca;--red-t:#991b1b;--red-m:#dc2626;
+  --purple-bg:#faf5ff;--purple-t:#5b21b6;
+  --r:8px;--rl:12px;--rxl:14px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;padding:1.5rem 1rem}
+.page{max-width:740px;margin:0 auto}
+
+/* HEADER */
+.hdr{background:var(--blue);border-radius:var(--rxl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:14px}
+.hdr-icon{width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-icon svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hdr h1{font-size:16px;font-weight:600;color:#fff;margin-bottom:2px}
+.hdr p{font-size:12px;color:rgba(255,255,255,.7)}
+
+/* PROGRESS */
+.prog{background:var(--white);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid var(--border)}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.prog-lbl{font-size:11px;font-weight:600;color:var(--sec);text-transform:uppercase;letter-spacing:.06em}
+.prog-pct{font-size:12px;font-weight:600;color:var(--blue)}
+.prog-track{height:6px;background:var(--blue-100);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#3b82f6);border-radius:3px;transition:width .5s ease}
+.snav{display:flex;gap:5px;flex-wrap:wrap}
+.sb{padding:4px 10px;font-size:11px;font-weight:500;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--sec);cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap}
+.sb:hover:not([disabled]){background:var(--blue-50);color:var(--blue-dark)}
+.sb.done{background:var(--blue-50);color:var(--blue-dark);border-color:var(--blue-200)}
+.sb.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sb[disabled]{opacity:.35;cursor:default}
+
+/* LESSON CARD */
+.lcard{background:var(--white);border-radius:var(--rxl);overflow:hidden;border:1px solid var(--border);margin-bottom:1rem;box-shadow:0 1px 3px rgba(26,86,219,.06)}
+.lhead{padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--blue-50)}
+.lbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:.625rem}
+.lbadge .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7}
+.b-intro{background:var(--blue-50);color:var(--blue-dark)}
+.b-sim{background:var(--green-bg);color:#166534}
+.b-deep{background:var(--purple-bg);color:var(--purple-t)}
+.b-eth{background:var(--amber-bg);color:#92400e}
+.b-prot{background:var(--blue-50);color:var(--blue-dark)}
+.b-addr{background:var(--green-bg);color:#166534}
+.b-wifi{background:var(--purple-bg);color:var(--purple-t)}
+.b-inet{background:var(--red-bg);color:#9f1239}
+.b-quiz{background:#fdf4ff;color:#6b21a8}
+.ltitle{font-size:19px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.lsub{font-size:13px;color:var(--sec)}
+.lbody{padding:1.25rem 1.5rem}
+
+/* CONTENT */
+.txt{font-size:14px;line-height:1.75;margin-bottom:1rem;color:var(--text)}
+.txt p{margin-bottom:.75rem}.txt p:last-child{margin:0}
+.txt strong{font-weight:600}
+
+.hl{border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.hl-icon{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+.hl strong{font-weight:600}
+.hl-blue{background:var(--blue-50);color:var(--blue-text);border:1px solid var(--blue-200)}
+.hl-green{background:var(--green-bg);color:var(--green-t);border:1px solid var(--green-b)}
+.hl-amber{background:var(--amber-bg);color:var(--amber-t);border:1px solid var(--amber-b)}
+.hl-red{background:var(--red-bg);color:var(--red-t);border:1px solid var(--red-b)}
+
+.def-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-bottom:1rem}
+.def-card{background:var(--blue-50);border:1px solid var(--border);border-radius:var(--r);padding:.75rem}
+.def-term{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.def-val{font-size:13px;line-height:1.5;color:var(--text)}
+
+.info-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.info-table th{background:var(--blue-50);padding:8px 12px;text-align:left;font-weight:600;font-size:12px;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.info-table td{padding:8px 12px;border-bottom:1px solid var(--blue-50);color:var(--text)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:nth-child(even) td{background:var(--blue-50)}
+.info-table.tight td,.info-table.tight th{padding:5px 9px;font-size:12px}
+
+/* CANVAS */
+.cvs-wrap{border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);background:var(--blue-50);margin-bottom:1rem}
+.cvs-wrap canvas{width:100%;display:block}
+.cvs-hint{font-size:11px;color:var(--hint);text-align:center;padding:5px 0 7px}
+
+/* CONTROLS */
+.status-bar{font-size:13px;color:var(--sec);padding:.5rem 1rem;background:var(--blue-50);border:1px solid var(--border);border-radius:var(--r);margin-bottom:.75rem;min-height:38px;line-height:1.5}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem}
+.btn{padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--r);cursor:pointer;transition:all .15s;font-family:inherit}
+.btn-p{background:var(--blue);color:#fff;border:none}.btn-p:hover{background:var(--blue-h)}.btn-p:disabled{opacity:.4;cursor:default}
+.btn-d{background:#fff;color:var(--red-m);border:1px solid var(--red-b)}.btn-d:hover{background:var(--red-bg)}
+.btn-ok{background:#fff;color:var(--green-m);border:1px solid var(--green-b)}.btn-ok:hover{background:var(--green-bg)}
+.btn-g{background:#fff;color:var(--text);border:1px solid var(--border2)}.btn-g:hover{background:var(--blue-50)}.btn-g:disabled{opacity:.35;cursor:default}
+
+.log-box{font-size:11px;font-family:monospace;max-height:88px;overflow-y:auto;padding:6px 10px;background:var(--blue-50);border:1px solid var(--border);border-radius:var(--r);margin-bottom:.75rem}
+.lg{padding:1.5px 0;border-bottom:1px solid var(--border)}.lg:last-child{border:none}
+.lg.ok{color:var(--green-m)}.lg.err{color:var(--red-m)}.lg.info{color:var(--blue)}.lg.warn{color:var(--amber-m)}
+
+/* STEP PILLS */
+.spills{display:flex;gap:4px;margin-bottom:.875rem}
+.sp{width:28px;height:4px;border-radius:2px;background:var(--blue-100);transition:background .3s}
+.sp.done{background:var(--blue-200)}.sp.on{background:var(--blue)}
+.expl-card{border:1px solid var(--border);border-radius:var(--rl);padding:.875rem 1rem;margin-bottom:.875rem;background:var(--blue-50)}
+.expl-num{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.expl-title{font-size:14px;font-weight:600;margin-bottom:5px;color:var(--text)}
+.expl-desc{font-size:13px;line-height:1.6;color:var(--sec)}
+.expl-nav{display:flex;gap:8px;margin-bottom:1rem}
+
+/* PILLS / TABS */
+.topo-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.875rem}
+.topo-pill{padding:5px 14px;font-size:12px;font-weight:500;border-radius:20px;border:1px solid var(--border2);background:#fff;cursor:pointer;font-family:inherit;color:var(--sec);transition:all .15s}
+.topo-pill.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.topo-pill:hover:not(.on){background:var(--blue-50);color:var(--blue-dark)}
+
+/* QUIZ */
+.q-prog-wrap{height:4px;background:var(--blue-100);border-radius:2px;margin-bottom:1.25rem;overflow:hidden}
+.q-prog{height:100%;background:var(--blue);border-radius:2px;transition:width .3s}
+.q-meta{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:1rem;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:.875rem}
+.q-opt{padding:10px 14px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-size:13px;font-family:inherit;background:#fff;color:var(--text);text-align:left;transition:all .1s;line-height:1.4}
+.q-opt:hover:not([disabled]){background:var(--blue-50);border-color:var(--blue-200)}
+.q-opt.correct{background:var(--green-bg);border-color:var(--green-m);color:var(--green-t)}
+.q-opt.wrong{background:var(--red-bg);border-color:var(--red-m);color:var(--red-t)}
+.q-exp{font-size:13px;color:var(--blue-dark);line-height:1.6;padding:10px 14px;background:var(--blue-50);border-radius:var(--r);margin-bottom:.875rem;border-left:3px solid var(--blue)}
+.qdot{width:10px;height:10px;border-radius:50%;background:var(--blue-100);display:inline-block}
+.qdot.ok{background:var(--green-m)}.qdot.bad{background:var(--red-m)}
+
+/* KONTROLNÍ OTÁZKY ZA KAPITOLOU */
+.chk{margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.25rem}
+.chk-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem}
+.chk-title{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em}
+.chk-score{font-size:12px;font-weight:600;color:var(--sec)}
+.chk-q{border:1px solid var(--border);border-radius:var(--rl);padding:.875rem 1rem;margin-bottom:.75rem;background:#fff}
+.chk-q.solved{background:var(--blue-50)}
+.chk-qt{font-size:13.5px;font-weight:600;line-height:1.5;margin-bottom:.625rem;display:flex;gap:8px}
+.chk-qn{color:var(--blue);flex-shrink:0}
+.chk-opts{display:flex;flex-direction:column;gap:6px}
+.chk-opt{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-size:12.5px;font-family:inherit;background:#fff;color:var(--text);text-align:left;transition:all .1s;line-height:1.45}
+.chk-opt:hover:not([disabled]){background:var(--blue-50);border-color:var(--blue-200)}
+.chk-opt.correct{background:var(--green-bg);border-color:var(--green-m);color:var(--green-t);font-weight:500}
+.chk-opt.wrong{background:var(--red-bg);border-color:var(--red-m);color:var(--red-t)}
+.chk-opt[disabled]{cursor:default}
+.chk-exp{font-size:12.5px;line-height:1.6;color:var(--blue-dark);padding:9px 12px;background:var(--blue-50);border-left:3px solid var(--blue);border-radius:var(--r);margin-top:.625rem}
+
+/* ER / SCHÉMATA */
+.svg-box{border:1px solid var(--border);border-radius:var(--rl);background:#fff;padding:.5rem;margin-bottom:1rem;overflow-x:auto}
+.svg-box svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.code{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12.5px;line-height:1.7;background:#0f172a;color:#e2e8f0;padding:.875rem 1rem;border-radius:var(--rl);margin-bottom:1rem;overflow-x:auto;white-space:pre}
+.code .k{color:#93c5fd}.code .s{color:#86efac}.code .c{color:#94a3b8;font-style:italic}
+.mini-tbl{width:100%;border-collapse:collapse;font-size:12px;font-family:ui-monospace,Menlo,monospace;margin-bottom:.5rem}
+.mini-tbl caption{font-size:11px;font-weight:700;color:var(--blue);text-align:left;padding-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.mini-tbl th{background:var(--blue-100);color:var(--blue-dark);padding:5px 8px;text-align:left;font-weight:600;border:1px solid var(--border2)}
+.mini-tbl td{padding:5px 8px;border:1px solid var(--border);color:var(--text)}
+.mini-tbl td.bad{background:var(--red-bg);color:var(--red-t)}
+.mini-tbl td.good{background:var(--green-bg);color:var(--green-t)}
+.mini-tbl td.key{background:var(--amber-bg);font-weight:600}
+.tbl-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:1rem}
+
+/* LESSON NAV */
+.lnav{display:flex;justify-content:space-between;align-items:center;padding:.875rem 1.5rem;border-top:1px solid var(--blue-50);background:var(--blue-50)}
+.lnav-pos{font-size:12px;color:var(--hint)}
+
+/* COMPLETE */
+.complete{text-align:center;padding:2.5rem 1rem}
+.complete-star{font-size:56px;margin-bottom:.75rem;line-height:1}
+.complete-title{font-size:22px;font-weight:700;margin-bottom:.5rem}
+.complete-score{font-size:42px;font-weight:700;color:var(--blue);margin-bottom:.5rem}
+.complete-sub{font-size:14px;color:var(--sec);max-width:400px;margin:0 auto 1.5rem;line-height:1.6}
+.slabel{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+
+
+/* SIMULÁTOR RELAČNÍ ALGEBRY */
+.ra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:7px;margin-bottom:.875rem}
+.ra-card{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--border2);background:#fff;
+  border-radius:var(--r);cursor:pointer;font-family:inherit;text-align:left;transition:all .13s}
+.ra-card:hover{background:var(--blue-50);border-color:var(--blue-200)}
+.ra-card.on{background:var(--blue);border-color:var(--blue)}
+.ra-op{font-size:16px;font-weight:600;color:var(--blue);min-width:26px;text-align:center;flex-shrink:0}
+.ra-op.sm{font-size:11px;letter-spacing:.03em}
+.ra-card.on .ra-op{color:#fff}
+.ra-nm{font-size:12.5px;color:var(--text);line-height:1.35}
+.ra-card.on .ra-nm{color:#fff;font-weight:500}
+.ra-query{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:14px;line-height:1.6;
+  padding:11px 14px;background:#0f172a;color:#e2e8f0;border-radius:var(--rl);margin-bottom:.75rem;overflow-x:auto}
+.ra-lbl{font-size:11px;font-weight:600;color:var(--sec);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+
+/* PYRAMIDA IS */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:3px;margin-bottom:.875rem}
+.pyr-lvl{border:1px solid var(--border2);background:#fff;cursor:pointer;font-family:inherit;padding:9px 8px;text-align:center;transition:all .15s;border-radius:4px}
+.pyr-lvl:hover{background:var(--blue-50)}
+.pyr-lvl.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.pyr-nm{font-size:13px;font-weight:700}
+.pyr-sub{font-size:10.5px;opacity:.75}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div id="toast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:opacity .3s"></div>
+<div class="hdr">
+  <div class="hdr-icon">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+  </div>
+  <div style="flex:1">
+    <h1>Informační systémy a databáze — interaktivní kurz</h1>
+    <p>Od informačního systému přes analýzu a ER model až po normální formy</p>
+  </div>
+  <button onclick="confirmReset()" title="Resetovat postup" style="background:rgba(255,255,255,.12);border:none;border-radius:8px;padding:7px 10px;cursor:pointer;color:#fff;font-size:11px;font-weight:500;font-family:inherit;white-space:nowrap;flex-shrink:0" onmouseover="this.style.background='rgba(255,255,255,.22)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">↺ Reset</button>
+</div>
+
+<div class="prog">
+  <div class="prog-top"><span class="prog-lbl">Postup kurzem</span><span class="prog-pct" id="progPct">0 %</span></div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="snav" id="stepsNav"></div>
+</div>
+
+<div class="lcard" id="lessonCard"></div>
+
+</div>
+<script>
+
+/* ══════════════════════════════════════
+   POMOCNÉ
+══════════════════════════════════════ */
+function hlIcon(t){
+  const icons={
+    info:`<svg class="hl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    check:`<svg class="hl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+    warn:`<svg class="hl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+    key:`<svg class="hl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="15" r="5"/><line x1="12.22" y1="11.22" x2="22" y2="2"/><line x1="22" y1="2" x2="22" y2="7"/><line x1="18" y1="2" x2="18" y2="7"/></svg>`
+  };
+  return icons[t]||icons.info;
+}
+function shuffle(arr){
+  const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;
+}
+
+/* ══════════════════════════════════════
+   DEFINICE LEKCÍ
+══════════════════════════════════════ */
+const LESSONS=[
+  {id:'is',     badge:'b-intro', bTxt:'Úvod',          title:'Informační systém',              sub:'Data, informace, prvky a subsystémy IS', nav:'Informační systém'},
+  {id:'typy',   badge:'b-prot',  bTxt:'Klasifikace',   title:'Typy IS podle úrovně řízení',    sub:'TPS, MIS, DSS, EIS — pyramida řízení', nav:'Typy IS'},
+  {id:'cyklus', badge:'b-sim',   bTxt:'Interaktivní',  title:'Životní cyklus IS',              sub:'Vodopádový model a jeho etapy', nav:'Životní cyklus'},
+  {id:'zadani', badge:'b-eth',   bTxt:'Zadání',        title:'Zadání a specifikace požadavků', sub:'Funkční a nefunkční požadavky, formalizace', nav:'Zadání'},
+  {id:'er',     badge:'b-sim',   bTxt:'Interaktivní',  title:'Datová analýza — ER model',      sub:'Entity, vztahy, kardinalita, dekompozice', nav:'ER model'},
+  {id:'dfd',    badge:'b-deep',  bTxt:'Analýza',       title:'Funkční analýza — DFD',          sub:'Diagram datových toků a jeho úrovně', nav:'DFD'},
+  {id:'std',    badge:'b-wifi',  bTxt:'Interaktivní',  title:'Dynamická analýza — STD',        sub:'Stavy, přechody a životní cyklus entity', nav:'STD'},
+  {id:'rel',    badge:'b-addr',  bTxt:'Databáze',      title:'Relační model a algebra',        sub:'Převod ER na tabulky, selekce, projekce, spojení', nav:'Relační model'},
+  {id:'norm',   badge:'b-sim',   bTxt:'Interaktivní',  title:'Funkční závislosti a normalizace',sub:'Anomálie, 1NF, 2NF, 3NF, BCNF', nav:'Normalizace'},
+  {id:'impl',   badge:'b-inet',  bTxt:'Realizace',     title:'Komunikace, implementace, provoz',sub:'Uživatelské rozhraní, testování, údržba', nav:'Implementace'},
+  {id:'quiz',   badge:'b-quiz',  bTxt:'Závěrečný kvíz',title:'Ověř si znalosti',               sub:'12 otázek ze všech kapitol', nav:'Závěrečný kvíz'},
+];
+
+let curL=0;
+const done=new Set();
+let qResults=[];
+let qOrder=[];
+let chkState={};   // {lekceId:{qIdx:zvolenáOdpověď}}
+
+/* ── ukládání postupu (bezpečné i bez localStorage) ───────────── */
+const LS_KEY='isdb_kurz_v1';
+let memStore=null;
+function saveState(){
+  const data={curL,done:[...done],qResults,qOrder,chkState};
+  memStore=data;
+  try{localStorage.setItem(LS_KEY,JSON.stringify(data));}catch(e){}
+}
+function loadState(){
+  let s=null;
+  try{const raw=localStorage.getItem(LS_KEY);if(raw)s=JSON.parse(raw);}catch(e){}
+  if(!s)s=memStore;
+  if(!s)return false;
+  curL=s.curL||0;
+  (s.done||[]).forEach(i=>done.add(i));
+  qResults=s.qResults||[];
+  qOrder=s.qOrder||[];
+  chkState=s.chkState||{};
+  if(qOrder.length===QS.length){
+    qShuffledOpts=qOrder.map(qi=>shuffle(QS[qi].opts.map((_,i)=>i)));
+  }
+  return true;
+}
+function clearState(){
+  memStore=null;
+  try{localStorage.removeItem(LS_KEY);}catch(e){}
+}
+
+/* ══════════════════════════════════════
+   NAVIGACE
+══════════════════════════════════════ */
+function updateProg(){
+  const pct=Math.round(done.size/LESSONS.length*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+' %';
+  document.getElementById('stepsNav').innerHTML=LESSONS.map((l,i)=>{
+    const isDone=done.has(i),isActive=i===curL,isLocked=i>0&&!done.has(i-1)&&!isDone&&!isActive;
+    const lbl=(isDone?'✓ ':'')+(i+1)+'. '+l.nav;
+    return`<button class="sb${isDone?' done':''}${isActive?' active':''}" ${isLocked?'disabled':''} onclick="goL(${i})">${lbl}</button>`;
+  }).join('');
+}
+function goL(i){if(i>0&&!done.has(i-1)&&!done.has(i)&&i!==curL)return;curL=i;saveState();render();updateProg();window.scrollTo({top:0,behavior:'smooth'});}
+function completeNext(){done.add(curL);saveState();if(curL<LESSONS.length-1){curL++;render();}else{renderComplete();}updateProg();window.scrollTo({top:0,behavior:'smooth'});}
+
+function render(){
+  const l=LESSONS[curL];const isLast=curL===LESSONS.length-1;
+  const bMap={is:bIs,typy:bTypy,cyklus:bCyklus,zadani:bZadani,er:bEr,dfd:bDfd,std:bStd,rel:bRel,norm:bNorm,impl:bImpl,quiz:bQuiz};
+  let body=(bMap[l.id]||bIs)();
+  if(l.id!=='quiz'&&CHECKS[l.id])body+=chkBlock(l.id);
+  document.getElementById('lessonCard').innerHTML=
+    `<div class="lhead"><div class="lbadge ${l.badge}"><div class="dot"></div>${l.bTxt}</div><div class="ltitle">${l.title}</div><div class="lsub">${l.sub}</div></div>`+
+    `<div class="lbody">${body}</div>`+
+    `<div class="lnav"><button class="btn btn-g" ${curL===0?'disabled':''} onclick="goL(${curL-1})">← Zpět</button><span class="lnav-pos">${curL+1} / ${LESSONS.length}</span><button class="btn btn-p" id="nextLBtn" onclick="completeNext()">${isLast?'Dokončit kurz ✓':'Další lekce →'}</button></div>`;
+  setTimeout(()=>postRender(l.id),40);
+}
+
+/* ══════════════════════════════════════
+   KONTROLNÍ OTÁZKY ZA KAPITOLOU
+══════════════════════════════════════ */
+function chkBlock(id){
+  const qs=CHECKS[id];
+  const st=chkState[id]||{};
+  const answered=Object.keys(st).length;
+  const okCount=qs.filter((q,i)=>st[i]===q.ans).length;
+  return`<div class="chk">
+    <div class="chk-hd">
+      <span class="chk-title">Kontrolní otázky</span>
+      <span class="chk-score" id="chkScore-${id}">${answered?okCount+' / '+qs.length+' správně':qs.length+' otázek'}</span>
+    </div>
+    ${qs.map((q,i)=>chkQ(id,q,i,st[i])).join('')}
+  </div>`;
+}
+function chkQ(id,q,i,chosen){
+  const solved=chosen!==undefined;
+  return`<div class="chk-q${solved?' solved':''}" id="chkq-${id}-${i}">
+    <div class="chk-qt"><span class="chk-qn">${i+1}.</span><span>${q.q}</span></div>
+    <div class="chk-opts">
+      ${q.opts.map((o,j)=>{
+        let cls='chk-opt';
+        if(solved){ if(j===q.ans)cls+=' correct'; else if(j===chosen)cls+=' wrong'; }
+        return`<button class="${cls}" ${solved?'disabled':''} onclick="chkAns('${id}',${i},${j})">${o}</button>`;
+      }).join('')}
+    </div>
+    ${solved?`<div class="chk-exp">${q.exp}</div>`:''}
+  </div>`;
+}
+function chkAns(id,i,j){
+  if(!chkState[id])chkState[id]={};
+  if(chkState[id][i]!==undefined)return;
+  chkState[id][i]=j;
+  saveState();
+  const q=CHECKS[id][i];
+  document.getElementById('chkq-'+id+'-'+i).outerHTML=chkQ(id,q,i,j);
+  const qs=CHECKS[id],st=chkState[id];
+  const okCount=qs.filter((qq,k)=>st[k]===qq.ans).length;
+  const el=document.getElementById('chkScore-'+id);
+  if(el)el.textContent=okCount+' / '+qs.length+' správně';
+}
+
+/* ══════════════════════════════════════
+   LEKCE 1 — INFORMAČNÍ SYSTÉM
+══════════════════════════════════════ */
+function bIs(){return`
+<div class="txt"><p>Informační systém je soubor <strong>lidí, technologií, dat a procesů</strong>, které společně sbírají, zpracovávají, uchovávají a distribuují informace. Není to tedy jen počítač ani jen software — bez lidí a bez zavedených postupů systém nefunguje.</p></div>
+
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Data vs. informace.</strong> Data jsou surové údaje bez kontextu — „25, 1998, Ostrava“. Informace vzniká, až když data dostanou význam: věk osoby, rok narození, město bydliště. Databáze uchovává data, hodnotu z nich dělá teprve jejich zasazení do souvislostí.</div></div>
+
+<div class="slabel">Tři subsystémy každého IS</div>
+<div class="def-grid">
+  <div class="def-card"><div class="def-term">Lidé</div><div class="def-val">Tvůrci informací, uživatelé a správci. Bez správných lidí na správných místech systém nefunguje.</div></div>
+  <div class="def-card"><div class="def-term">Informace</div><div class="def-val">Buď jako ekonomický zdroj (podpora činnosti organizace), nebo jako komodita (informace je sám produkt).</div></div>
+  <div class="def-card"><div class="def-term">Infrastruktura</div><div class="def-val">Jazyky (SQL, XML), technologie (HW, SW, sítě), pracovní postupy a materiální zabezpečení.</div></div>
+</div>
+
+<div class="slabel">Databázové pojmy — od reality k tabulce</div>
+<div class="svg-box">
+<svg viewBox="0 0 620 190" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">
+  <rect x="12" y="24" width="150" height="140" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="87" y="16" font-size="11" font-weight="700" fill="#1a56db" text-anchor="middle">REALITA</text>
+  <text x="87" y="60" font-size="12" fill="#111827" text-anchor="middle">Student</text>
+  <text x="87" y="80" font-size="10.5" fill="#6b7280" text-anchor="middle">Jan Novák</text>
+  <text x="87" y="96" font-size="10.5" fill="#6b7280" text-anchor="middle">nar. 15. 3. 1998</text>
+  <text x="87" y="128" font-size="10" fill="#9ca3af" text-anchor="middle">= entita</text>
+  <text x="87" y="144" font-size="10" fill="#9ca3af" text-anchor="middle">(objekt reálného světa)</text>
+
+  <path d="M170 94 L200 94" stroke="#1a56db" stroke-width="2" marker-end="url(#ar1)"/>
+  <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1a56db"/></marker></defs>
+
+  <rect x="206" y="24" width="180" height="140" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="296" y="16" font-size="11" font-weight="700" fill="#16a34a" text-anchor="middle">MODEL</text>
+  <text x="296" y="56" font-size="11.5" fill="#111827" text-anchor="middle" font-weight="600">Student</text>
+  <text x="296" y="76" font-size="10.5" fill="#374151" text-anchor="middle">(rč, jméno, datum_nar)</text>
+  <text x="296" y="112" font-size="10" fill="#9ca3af" text-anchor="middle">= entitní typ</text>
+  <text x="296" y="128" font-size="10" fill="#9ca3af" text-anchor="middle">název + seznam atributů</text>
+
+  <path d="M394 94 L424 94" stroke="#1a56db" stroke-width="2" marker-end="url(#ar1)"/>
+
+  <rect x="430" y="24" width="178" height="140" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+  <text x="519" y="16" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle">DATABÁZE</text>
+  <rect x="446" y="42" width="146" height="20" fill="#dbeafe" stroke="#bfdbfe"/>
+  <text x="519" y="56" font-size="10" fill="#1e40af" text-anchor="middle">rč | jméno | datum_nar</text>
+  <rect x="446" y="62" width="146" height="19" fill="#fff" stroke="#e5e7eb"/>
+  <text x="519" y="75" font-size="9.5" fill="#374151" text-anchor="middle">9803154321 | Novák | 1998-03-15</text>
+  <rect x="446" y="81" width="146" height="19" fill="#fff" stroke="#e5e7eb"/>
+  <text x="519" y="94" font-size="9.5" fill="#9ca3af" text-anchor="middle">…</text>
+  <text x="519" y="126" font-size="10" fill="#9ca3af" text-anchor="middle">tabulka = entitní typ</text>
+  <text x="519" y="142" font-size="10" fill="#9ca3af" text-anchor="middle">řádek = instance/záznam</text>
+</svg>
+</div>
+
+<table class="info-table">
+  <thead><tr><th>Pojem</th><th>Význam</th><th>V databázi</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Entita</strong></td><td>Objekt reálného světa, který nás zajímá</td><td>—</td></tr>
+    <tr><td><strong>Entitní typ</strong></td><td>Množina entit stejného druhu</td><td>Tabulka</td></tr>
+    <tr><td><strong>Instance / záznam</strong></td><td>Konkrétní výskyt entity</td><td>Řádek</td></tr>
+    <tr><td><strong>Atribut</strong></td><td>Vlastnost, kterou evidujeme</td><td>Sloupec (pole)</td></tr>
+    <tr><td><strong>Doména</strong></td><td>Množina přípustných hodnot atributu</td><td>Datový typ + omezení</td></tr>
+  </tbody>
+</table>
+
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Nejčastější záměna:</strong> entitní typ × entita. <em>Student</em> je typ (popis toho, co evidujeme). <em>Jan Novák</em> je entita — jeden konkrétní výskyt. V tabulce odpovídá typ celé tabulce, entita jedinému řádku.</div></div>
+
+<div class="slabel">Jaké problémy IS řeší</div>
+<div class="def-grid">
+  <div class="def-card"><div class="def-term">Potřeba informací</div><div class="def-val">Pro poznání situace, rozhodování a realizaci činností.</div></div>
+  <div class="def-card"><div class="def-term">Složitost</div><div class="def-val">Strukturuje chaos velké organizace a činí ji řiditelnou.</div></div>
+  <div class="def-card"><div class="def-term">Znovupoužitelnost</div><div class="def-val">Jedna centrální databáze místo duplicit v každém oddělení.</div></div>
+  <div class="def-card"><div class="def-term">Automatizace</div><div class="def-val">Zrychluje rutinu a snižuje chybovost.</div></div>
+  <div class="def-card"><div class="def-term">Komunikace</div><div class="def-val">Všechna oddělení pracují s týmiž aktuálními údaji.</div></div>
+  <div class="def-card"><div class="def-term">Bezpečnost</div><div class="def-val">Přístupová práva, šifrování, zálohy, evidence změn.</div></div>
+</div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 2 — TYPY IS
+══════════════════════════════════════ */
+const PYR=[
+  {id:'eis',nm:'EIS',w:38,sub:'Exekutivní IS',uroven:'Strategická',ucel:'Podpora vrcholového vedení',vystup:'Klíčové indikátory pro strategické rozhodování',data:'Napojení na MIS i na okolí podniku',podpora:'Jen orientační',apl:'Reakce na okolí podniku, konkurence, trh',obd:'okolo r. 1990',pozn:'Na rozdíl od MIS se zajímá především o informace z okolí podniku — technické inovace, trh, konkurence. Sumarizuje interní data do nejvyšší úrovně agregace.'},
+  {id:'dss',nm:'DSS',w:56,sub:'Systémy pro podporu rozhodování',uroven:'Taktická',ucel:'Pružné rozhodování',vystup:'Informace pro rozhodování',data:'Databáze a báze modelů',podpora:'Semistrukturované problémy',apl:'Strategické plánování, analýzy „co když“',obd:'před r. 1980',pozn:'Obsahuje modely a simulace. Pomáhá identifikovat faktory způsobující problém, nabízí varianty řešení a pomáhá vybrat z dostupných možností.'},
+  {id:'mis',nm:'MIS',w:74,sub:'Manažerské IS',uroven:'Taktická',ucel:'Nejrůznější práce s daty',vystup:'Zprávy na vyžádání',data:'Soubory v interakci',podpora:'Rutinní úlohy',apl:'Řízení výroby, inventury',obd:'1962–1970',pozn:'Zaměřuje se na dění uvnitř podniku. Odpovídá na otázku „jaký je stav teď“ — je manažerovým radarem na běžné operace.'},
+  {id:'tps',nm:'TPS / OLRT',w:92,sub:'Transakční IS',uroven:'Operační',ucel:'Transakce s daty',vystup:'Agregované zprávy',data:'Jednotlivé soubory',podpora:'Slabá',apl:'Mzdy, evidence materiálu',obd:'1955–1960',pozn:'Nejstarší a nejrozšířenější typ. Zaznamenává každodenní transakce v režimu OLTP. Je kritický — bez něj se podnik zastaví. Moderním rozšířením je ERP.'},
+];
+let pyrSel='tps';
+function bTypy(){return`
+<div class="txt"><p>Informační systémy se liší podle toho, komu slouží. Čím výše v řídicí pyramidě, tím <strong>agregovanější informace</strong>, tím <strong>méně strukturované problémy</strong> a tím větší <strong>neurčitost</strong>.</p></div>
+
+<div class="slabel">Klikni na úroveň pyramidy</div>
+<div class="pyr" id="pyrBox"></div>
+<div id="pyrDetail"></div>
+
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Jak si to zapamatovat:</strong> TPS odpovídá „co se právě stalo“, MIS „jaký je stav“, DSS „co se stane, když…“ a EIS „kam směřujeme“. Směrem nahoru roste míra agregace a klesá množství podrobností.</div></div>
+
+<div class="slabel">Členění IS podle provozovatele</div>
+<table class="info-table">
+  <thead><tr><th>Typ</th><th>Informace jsou</th><th>Příklad</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Podnikový IS (BIS)</strong></td><td>ekonomickým zdrojem</td><td>ERP firmy, IS školy</td></tr>
+    <tr><td><strong>Veřejný IS</strong></td><td>komoditou (zbožím)</td><td>TV, tisk, knihovny, agentury</td></tr>
+    <tr><td><strong>Státní IS (GIS)</strong></td><td>nástrojem veřejné správy</td><td>Registry státní správy</td></tr>
+    <tr><td><strong>Osobní IS</strong></td><td>podporou jednotlivce</td><td>Osobní evidence, poznámky</td></tr>
+  </tbody>
+</table>
+
+<div class="hl hl-green">${hlIcon('check')}<div><strong>ERP, CRM, SCM:</strong> moderní rozšíření transakčních systémů. <strong>ERP</strong> integruje všechny podnikové procesy (výroba, prodej, sklad, finance), <strong>CRM</strong> řídí vztahy se zákazníky, <strong>SCM</strong> dodavatelský řetězec.</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 3 — ŽIVOTNÍ CYKLUS
+══════════════════════════════════════ */
+const FAZE=[
+  {nm:'Zadání',cil:'Pochopit potřebu systému a vymezit očekávání.',vyst:'Funkční a nefunkční požadavky, kontextový diagram, model jednání, seznam událostí.',kdo:'Zadavatel projektu',risk:'Chyba zde je nejdražší ze všech — staví se na ní vše ostatní.'},
+  {nm:'Analýza',cil:'Prostudovat problém a vytvořit model systému.',vyst:'Konceptuální schéma (ER), DFD, minispecifikace, stavové diagramy.',kdo:'Analytik',risk:'Vynechání analýzy vede k systému, který nesedí na skutečné procesy.'},
+  {nm:'Návrh implementace',cil:'Rozhodnout, jak se řešení technicky postaví.',vyst:'Systémový a objektový návrh, architektura, volba SŘBD, rozdělení na moduly.',kdo:'Návrhář / architekt',risk:'Špatná architektura se později mění jen za cenu přepsání systému.'},
+  {nm:'Implementace',cil:'Naprogramovat systém podle návrhu.',vyst:'Funkční kód, programová dokumentace, uživatelský manuál.',kdo:'Programátor',risk:'Bez dokumentace vzniká závislost na konkrétních lidech.'},
+  {nm:'Testování',cil:'Ověřit shodu s představou uživatele i se specifikací.',vyst:'Protokoly o testech, seznam nalezených chyb.',kdo:'Tester',risk:'Testování neprokáže nepřítomnost chyb — jen je hledá na konečné sadě příkladů.'},
+  {nm:'Předání do provozu',cil:'Předat systém uživatelům a přejít na nový způsob práce.',vyst:'Nainstalovaný systém, převedená data, proškolení uživatelé.',kdo:'Dodavatel + uživatelé',risk:'Převod starých dat bývá pracnější, než se čeká — bývají nekonzistentní.'},
+  {nm:'Provoz a údržba',cil:'Udržovat, opravovat a rozvíjet běžící systém.',vyst:'Opravy, úpravy, nové funkce.',kdo:'Správce systému',risk:'Časově nejdelší etapa — trvá roky až desítky let.'},
+];
+let fazeSel=0;
+function bCyklus(){return`
+<div class="txt"><p>Životní cyklus IS je postup, podle kterého systém <strong>vzniká, vyvíjí se a je udržován</strong> — od prvního nápadu až po jeho ukončení. Nejznámějším modelem je <strong>vodopádový model</strong>: etapy na sebe navazují jako voda padající po stupních a výstup jedné je vstupem další.</p></div>
+
+<div class="slabel">Klikni na etapu — zobrazí se její cíl, výstup a rizika</div>
+<div class="cvs-wrap"><canvas id="cyklC" width="600" height="330"></canvas><div class="cvs-hint">Šipky vzad = návrat při zjištění chyby. Čím delší šipka, tím dražší náprava.</div></div>
+<div id="fazeDetail"></div>
+
+<div class="hl hl-red">${hlIcon('warn')}<div><strong>Klíčový princip:</strong> cena opravy chyby roste s tím, jak pozdě se chyba najde. Nedorozumění v zadání by se při rozhovoru vyřešilo za pět minut — po nasazení znamená přepsání modulů, migraci dat a přeškolení uživatelů.</div></div>
+
+<div class="slabel">Silné a slabé stránky vodopádového modelu</div>
+<table class="info-table">
+  <thead><tr><th>Výhody</th><th>Nevýhody</th></tr></thead>
+  <tbody>
+    <tr><td>Jasně definované kroky a výstupy</td><td>Nízká flexibilita při změnách zadání</td></tr>
+    <tr><td>Přehledná dokumentace</td><td>Pozdní zapojení uživatele</td></tr>
+    <tr><td>Dobře se řídí velké projekty</td><td>Riziko „papírového projektu“</td></tr>
+    <tr><td>Kontrola kvality na konci etap</td><td>Chyby se zjistí až se zpožděním</td></tr>
+  </tbody>
+</table>
+
+<div class="hl hl-green">${hlIcon('check')}<div><strong>A co agilní vývoj?</strong> Z kritiky pozdního zapojení uživatele vyrostly iterativní a agilní přístupy. Etapy uvnitř jednoho cyklu ale zůstávají stejné — jen probíhají v menším měřítku a opakovaně.</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 4 — ZADÁNÍ
+══════════════════════════════════════ */
+const OTAZKY7=[
+  {k:'PROČ',t:'Proč nový systém?',d:'Jaký problém řešíme, co dnes nefunguje. Bez odpovědi nelze posoudit, zda byl projekt úspěšný.',p:'Nemám žádnou evidenci kazet, občas omylem koupím znovu tutéž, občas zapomenu, komu jsem co půjčil.'},
+  {k:'ČEMU',t:'Čemu má sloužit?',d:'Jaký je cíl systému v běžném provozu. Musí být konkrétní.',p:'Vedení evidence domácí videotéky a přehled o půjčených kazetách.'},
+  {k:'KDO',t:'Kdo s ním bude pracovat?',d:'Jaké role uživatelů přijdou se systémem do styku. Různé role potřebují různé funkce a mají různá oprávnění.',p:'Já sám a rodinní příslušníci.'},
+  {k:'VSTUPY',t:'Jaká data evidovat?',d:'Seznam všech objektů a jevů včetně atributů. Je východiskem datové analýzy.',p:'Informace o kazetách a programech na nich nahraných — název, žánr, autor, délka.'},
+  {k:'VÝSTUPY',t:'Jaké informace vydávat?',d:'Výstupní sestavy, tisky a požadované informace.',p:'Seznamy programů a kazet, na kterých jsou; kdo si co půjčil a jak dlouho to má.'},
+  {k:'FUNKCE',t:'Jaké operace provádět?',d:'Jaké výpočty, odvozování, výběry a třídění bude systém dělat.',p:'Při nákupu kontrolovat, zda titul už nemám. Vést záznam o výpůjčkách. Vybírat podle žánru, autora, délky.'},
+  {k:'OKOLÍ',t:'Vazby na okolí systému?',d:'Odkud data přicházejí a kam výstupy odcházejí — jiné systémy, organizace, lidé.',p:'Já, moji přátelé, autoři a prodejci kazet.'},
+];
+let ot7Sel=0;
+function bZadani(){return`
+<div class="txt"><p>Cílem zadání je <strong>pochopit potřebu systému a vymezit očekávání</strong>. Vytváří ho zadavatel — tedy ten, kdo systém potřebuje, ne ten, kdo ho bude programovat. Proto smí být psáno běžným jazykem: zadavatel ho musí umět odsouhlasit.</p></div>
+
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Zadání ≠ analýza.</strong> Zadání říká, <em>co</em> má systém umět z pohledu uživatele. Analýza teprve zkoumá, <em>jak</em> toho dosáhnout.</div></div>
+
+<div class="slabel">Funkční požadavky — sedm otázek, na které musí zadání odpovědět</div>
+<div class="topo-row" id="ot7Row"></div>
+<div id="ot7Detail"></div>
+
+<div class="slabel">Nefunkční požadavky — jak dobře má systém pracovat</div>
+<div class="txt"><p>Zatímco funkční požadavky říkají <em>co</em>, nefunkční popisují <strong>kvalitu a podmínky fungování</strong>. Rozdíl je vidět na dvojici vět:</p></div>
+<div class="tbl-pair">
+  <div class="def-card" style="background:var(--blue-50)"><div class="def-term">Funkční požadavek</div><div class="def-val">„Systém zobrazí seznam studentů.“</div></div>
+  <div class="def-card" style="background:var(--amber-bg);border-color:var(--amber-b)"><div class="def-term" style="color:var(--amber-m)">Nefunkční požadavek</div><div class="def-val">„Systém zobrazí seznam 10 000 studentů do 2 sekund.“</div></div>
+</div>
+<table class="info-table">
+  <thead><tr><th>Kategorie</th><th>Obsah</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Na výsledný program</strong></td><td>Efektivita, spolehlivost, přenositelnost, použitelnost</td></tr>
+    <tr><td><strong>Na způsob řešení</strong></td><td>Metody, standardy, dokumentace, programovací jazyk, prostředí</td></tr>
+    <tr><td><strong>Vnější</strong></td><td>Cena, termíny, bezpečnost, legislativa</td></tr>
+  </tbody>
+</table>
+
+<div class="slabel">Formalizace zadání — tři modely vnějšího chování</div>
+<div class="svg-box">
+<svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">
+  <text x="10" y="16" font-size="11" font-weight="700" fill="#1a56db">1. SEZNAM UDÁLOSTÍ A REAKCÍ</text>
+  <rect x="10" y="24" width="270" height="86" rx="6" fill="#fff" stroke="#bfdbfe"/>
+  <rect x="10" y="24" width="270" height="20" fill="#dbeafe"/>
+  <text x="20" y="38" font-size="10" font-weight="600" fill="#1e40af">událost</text>
+  <text x="135" y="38" font-size="10" font-weight="600" fill="#1e40af">reakce</text>
+  <text x="20" y="58" font-size="10" fill="#374151">nový čtenář</text><text x="135" y="58" font-size="10" fill="#374151">zapiš do seznamu čtenářů</text>
+  <text x="20" y="76" font-size="10" fill="#374151">výpůjčka knihy</text><text x="135" y="76" font-size="10" fill="#374151">zapiš výpůjčku</text>
+  <text x="20" y="94" font-size="10" fill="#374151">vrácení knihy</text><text x="135" y="94" font-size="10" fill="#374151">zapiš vrácení</text>
+  <line x1="128" y1="44" x2="128" y2="110" stroke="#dbeafe"/>
+
+  <text x="320" y="16" font-size="11" font-weight="700" fill="#16a34a">2. KONTEXTOVÝ DIAGRAM</text>
+  <rect x="320" y="24" width="290" height="86" rx="6" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <ellipse cx="465" cy="67" rx="46" ry="26" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="465" y="71" font-size="11" font-weight="600" fill="#14532d" text-anchor="middle">KNIHOVNA</text>
+  <rect x="330" y="38" width="62" height="20" rx="3" fill="#fff" stroke="#6b7280"/>
+  <text x="361" y="52" font-size="9.5" fill="#374151" text-anchor="middle">Knihovník</text>
+  <rect x="330" y="76" width="62" height="20" rx="3" fill="#fff" stroke="#6b7280"/>
+  <text x="361" y="90" font-size="9.5" fill="#374151" text-anchor="middle">Nakladatel</text>
+  <rect x="540" y="57" width="60" height="20" rx="3" fill="#fff" stroke="#6b7280"/>
+  <text x="570" y="71" font-size="9.5" fill="#374151" text-anchor="middle">Čtenář</text>
+  <path d="M392 50 L422 60" stroke="#374151" stroke-width="1.2" marker-end="url(#ar2)"/>
+  <path d="M392 86 L422 76" stroke="#374151" stroke-width="1.2" marker-end="url(#ar2)"/>
+  <path d="M511 67 L538 67" stroke="#374151" stroke-width="1.2" marker-end="url(#ar2)"/>
+  <defs><marker id="ar2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#374151"/></marker></defs>
+  <text x="465" y="106" font-size="9" fill="#6b7280" text-anchor="middle">systém = černá skříňka, okolo aktéři</text>
+
+  <text x="10" y="140" font-size="11" font-weight="700" fill="#5b21b6">3. MODEL JEDNÁNÍ — kdo smí kterou funkci vyvolat</text>
+  <rect x="10" y="148" width="600" height="94" rx="6" fill="#faf5ff" stroke="#e9d5ff"/>
+  <rect x="26" y="164" width="86" height="26" rx="3" fill="#fff" stroke="#6b7280"/>
+  <text x="69" y="181" font-size="10.5" fill="#374151" text-anchor="middle">Knihovník</text>
+  <rect x="26" y="204" width="86" height="26" rx="3" fill="#fff" stroke="#6b7280"/>
+  <text x="69" y="221" font-size="10.5" fill="#374151" text-anchor="middle">Čtenář</text>
+  <ellipse cx="330" cy="166" rx="74" ry="15" fill="#fff" stroke="#5b21b6"/>
+  <text x="330" y="170" font-size="10.5" fill="#5b21b6" text-anchor="middle">Konec roku</text>
+  <ellipse cx="330" cy="200" rx="74" ry="15" fill="#fff" stroke="#5b21b6"/>
+  <text x="330" y="204" font-size="10.5" fill="#5b21b6" text-anchor="middle">Výpůjčka</text>
+  <ellipse cx="330" cy="230" rx="74" ry="15" fill="#fff" stroke="#5b21b6"/>
+  <text x="330" y="234" font-size="10.5" fill="#5b21b6" text-anchor="middle">Vrácení knihy</text>
+  <path d="M112 172 L254 166" stroke="#5b21b6" stroke-width="1.2" marker-end="url(#ar3)"/>
+  <path d="M112 180 L254 196" stroke="#5b21b6" stroke-width="1.2" marker-end="url(#ar3)"/>
+  <path d="M112 212 L254 202" stroke="#5b21b6" stroke-width="1.2" marker-end="url(#ar3)"/>
+  <path d="M112 220 L254 228" stroke="#5b21b6" stroke-width="1.2" marker-end="url(#ar3)"/>
+  <defs><marker id="ar3" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#5b21b6"/></marker></defs>
+  <text x="480" y="196" font-size="9.5" fill="#6b7280">Z modelu jednání vychází</text>
+  <text x="480" y="210" font-size="9.5" fill="#6b7280">návrh přístupových práv.</text>
+</svg>
+</div>
+
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Aktér × uživatel.</strong> <strong>Aktér</strong> je role v okolí systému, která s ním komunikuje — může to být i jiný systém. Kreslí se do kontextového diagramu. <strong>Uživatel</strong> je člověk, který se systémem přímo pracuje; kreslí se do modelu jednání. Nakladatel je aktér, knihovník uživatel.</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 5 — ER MODEL
+══════════════════════════════════════ */
+const KARD=[
+  {id:'11', nm:'1:1', e1:'Učitel', e2:'Katedra', vz:'VEDE',
+   l:{many:false,pov:false}, r:{many:false,pov:true},
+   pop:'Katedra má nanejvýš jednoho vedoucího a učitel je vedoucím nejvýše jedné katedry.',
+   pov:'Katedra <strong>musí</strong> mít vedoucího (plný kroužek), učitel vedoucím <strong>být nemusí</strong> (prázdný kroužek).',
+   real:'Cizí klíč se umístí do jedné z tabulek — obvykle do té, kde je členství povinné.'},
+  {id:'1n', nm:'1:N', e1:'Učitel', e2:'Katedra', vz:'ČLENEM',
+   l:{many:true,pov:true}, r:{many:false,pov:true},
+   pop:'Učitel je členem právě jedné katedry, katedra má mnoho členů.',
+   pov:'Obě strany povinné: každý učitel patří pod katedru a katedra má členy.',
+   real:'Do tabulky na straně „N“ (Učitel) se přidá cizí klíč odkazující na Katedru.'},
+  {id:'mn', nm:'M:N', e1:'Učitel', e2:'Předmět', vz:'UČÍ',
+   l:{many:true,pov:true}, r:{many:true,pov:false},
+   pop:'Učitel může učit více předmětů a týž předmět může vyučovat více učitelů.',
+   pov:'Učitel musí učit alespoň jeden předmět, předmět nemusí být obsazen.',
+   real:'<strong>Nelze realizovat přímo!</strong> Relační SŘBD kardinalitu M:N neumí — je nutná dekompozice.'},
+];
+let kardSel='11', dekompOn=false;
+
+function bEr(){return`
+<div class="txt"><p>Výsledkem datové analýzy je <strong>konceptuální schéma</strong>. Zpřesňuje zadání tak, aby bylo úplné, jednoznačné, přesné a bezesporné. Data jsou tou částí systému, která přežije nejdéle — funkce i rozhraní se mění, jednou zvolená struktura dat provází systém po celý jeho život.</p></div>
+
+<div class="slabel">Notace ER diagramu</div>
+<div class="svg-box">
+<svg viewBox="0 0 600 96" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">
+  <rect x="14" y="30" width="88" height="34" rx="3" fill="#fff" stroke="#111827" stroke-width="1.6"/>
+  <text x="58" y="52" font-size="12" text-anchor="middle" fill="#111827">Entitní typ</text>
+  <text x="58" y="80" font-size="10" fill="#6b7280" text-anchor="middle">obdélník</text>
+  <path d="M175 47 L215 27 L255 47 L215 67 z" fill="#fff" stroke="#111827" stroke-width="1.6"/>
+  <text x="215" y="51" font-size="11" text-anchor="middle" fill="#111827">VZTAH</text>
+  <text x="215" y="80" font-size="10" fill="#6b7280" text-anchor="middle">kosočtverec</text>
+  <circle cx="330" cy="47" r="6" fill="#fff" stroke="#111827" stroke-width="1.6"/>
+  <text x="330" y="80" font-size="10" fill="#6b7280" text-anchor="middle">nepovinné členství</text>
+  <circle cx="430" cy="47" r="6" fill="#111827"/>
+  <text x="430" y="80" font-size="10" fill="#6b7280" text-anchor="middle">povinné členství</text>
+  <path d="M515 47 L545 33 M515 47 L545 47 M515 47 L545 61" stroke="#111827" stroke-width="1.6" fill="none"/>
+  <text x="535" y="80" font-size="10" fill="#6b7280" text-anchor="middle">„husí nožka“ = mnoho</text>
+</svg>
+</div>
+
+<div class="slabel">Kardinalita vztahu — přepni a sleduj změnu značek</div>
+<div class="topo-row" id="kardRow"></div>
+<div class="cvs-wrap"><canvas id="erC" width="600" height="200"></canvas><div class="cvs-hint">Značky na koncích spojnice nesou dvě informace zároveň: povinnost členství i počet entit</div></div>
+<div id="kardDetail"></div>
+<div class="brow" id="dekompRow" style="display:none">
+  <button class="btn btn-p" id="dekompBtn" onclick="toggleDekomp()">Provést dekompozici ▶</button>
+</div>
+
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Dekompozice M:N.</strong> Relační systémy neumějí vztah M:N vyjádřit přímo. Mezi oba entitní typy se vloží <strong>nový entitní typ</strong> a původní vztah se nahradí dvěma vztahy 1:N směřujícími do něj. Nový typ přitom nebývá umělý — obvykle odpovídá něčemu skutečnému a má vlastní atributy (u Výuky třeba semestr nebo počet hodin).</div></div>
+
+<div class="slabel">Klíče a atributy</div>
+<div class="def-grid">
+  <div class="def-card"><div class="def-term">Doména atributu</div><div class="def-val">Množina hodnot, kterých může atribut nabývat. Např. celá čísla 0–99 999.</div></div>
+  <div class="def-card"><div class="def-term">Kandidátní klíč</div><div class="def-val">Atribut nebo množina atributů jednoznačně určující entitu. Může jich být více.</div></div>
+  <div class="def-card"><div class="def-term">Primární klíč</div><div class="def-val">Jeden zvolený kandidátní klíč používaný jako identifikátor.</div></div>
+  <div class="def-card"><div class="def-term">Primární atribut</div><div class="def-val">Atribut patřící některému klíči.</div></div>
+  <div class="def-card"><div class="def-term">Sekundární atribut</div><div class="def-val">Atribut nepatřící žádnému klíči.</div></div>
+  <div class="def-card"><div class="def-term">Cizí klíč</div><div class="def-val">Atribut odkazující na primární klíč jiné tabulky — realizuje vztah.</div></div>
+</div>
+
+<div class="code"><span class="c">// Lineární textový zápis — vede se souběžně s diagramem</span>
+Zaměstnanec (<span class="k">RČ</span>, jméno, příjmení, adresa, funkce)
+Oddělení (<span class="k">ido</span>, název, adresa, zaměření)
+PATŘÍ_DO_ODDĚLENÍ (Zaměstnanec, Oddělení)
+
+<span class="c">// podtržený / zvýrazněný atribut = primární klíč</span></div>
+
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Úplné konceptuální schéma</strong> obsahuje: lineární seznam entitních typů s klíči, seznam vztahů, ER diagram, jeho dekompozici, datový slovník a seznam integritních omezení.</div></div>
+
+<div class="slabel">Datový slovník</div>
+<div class="txt"><p>Datový slovník shrnuje všechny informace o atributech na jednom místě. Pro každý atribut uvádí datový typ, délku, zda patří do klíče, zda smí zůstat nevyplněný, zda je indexován, jaká integritní omezení se na něj vztahují a co znamená. Je to dokument, ze kterého se <strong>přímo zakládá databáze</strong>.</p></div>
+<table class="info-table tight">
+  <thead><tr><th>Název</th><th>Typ</th><th>Délka</th><th>Klíč</th><th>Null</th><th>Index</th><th>IO</th><th>Význam</th></tr></thead>
+  <tbody>
+    <tr><td><strong>rč</strong></td><td>char</td><td>10</td><td>A</td><td>N</td><td>A</td><td>*1</td><td></td></tr>
+    <tr><td>jméno</td><td>char</td><td>30</td><td>N</td><td>N</td><td>A</td><td></td><td>*2</td></tr>
+    <tr><td>adresa</td><td>char</td><td>250</td><td>N</td><td>A</td><td>N</td><td></td><td></td></tr>
+    <tr><td>funkce</td><td>char</td><td>30</td><td>N</td><td>A</td><td>N</td><td></td><td></td></tr>
+    <tr><td>plat</td><td>decimal</td><td>10,2</td><td>N</td><td>A</td><td>N</td><td>≥ 0</td><td></td></tr>
+    <tr><td>datumNar</td><td>date</td><td>—</td><td>N</td><td>N</td><td>N</td><td>*3</td><td></td></tr>
+    <tr><td>místoNar</td><td>char</td><td>30</td><td>N</td><td>A</td><td>N</td><td></td><td></td></tr>
+  </tbody>
+</table>
+<div class="txt" style="font-size:12.5px;color:var(--sec);margin-bottom:1rem"><p>*1 tvar 1122334444, kde 11 je poslední dvojčíslí roku &nbsp;·&nbsp; *2 příjmení, křestní jména, tituly &nbsp;·&nbsp; *3 musí souhlasit s údaji v rodném čísle</p></div>
+<div class="hl hl-amber">${hlIcon('warn')}<div>Sloupec <strong>Význam</strong> bývá podceňován, ale je to jediné místo, kde se zaznamená, že atribut „jméno“ obsahuje příjmení, křestní jména i tituly dohromady. Bez toho bude za dva roky každý programátor hádat.</div></div>
+
+<div class="slabel">Integritní omezení — podmínky, které databáze sama hlídá</div>
+<table class="info-table tight">
+  <thead><tr><th>Typ omezení</th><th>Příklad</th></tr></thead>
+  <tbody>
+    <tr><td>Rozsah hodnot</td><td>plat &gt; 0</td></tr>
+    <tr><td>Formát dat</td><td>PSČ = řetězec 5 číslic bez mezer</td></tr>
+    <tr><td>Jedinečnost</td><td>žádní dva studenti nemají stejný login</td></tr>
+    <tr><td>Povolení NULL</td><td>e-mail smí zůstat nevyplněný</td></tr>
+    <tr><td>Kardinalita a povinnost</td><td>každý učitel patří pod katedru</td></tr>
+    <tr><td>Existence cizích klíčů</td><td>nelze zapsat výpůjčku neexistujícímu čtenáři</td></tr>
+  </tbody>
+</table>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 6 — DFD
+══════════════════════════════════════ */
+const DFD_URV=[
+  {id:0,nm:'Kontextový',pop:'Systém jako celek vůči okolí. Jediný proces, kolem něj aktéři. Shodný s kontextovým diagramem ze zadání.'},
+  {id:1,nm:'Úroveň 0',pop:'Diagram pro celý IS — jeho základní funkce. Knihovna se dělí na tři procesy a dvě datové paměti.'},
+  {id:2,nm:'Úroveň 1',pop:'Rozklad jedné funkce na podfunkce. Číslování 1.1–1.4 zachovává vazbu na nadřazenou úroveň.'},
+  {id:3,nm:'Úroveň 2',pop:'Elementární, dále nedělitelná funkce. Zajímají nás už jen konkrétní datové toky a atributy.'},
+];
+let dfdSel=1;
+function bDfd(){return`
+<div class="txt"><p>Konceptuální schéma řeklo, <em>jaká data</em> systém uchovává. Funkční analýza navazuje otázkou, <strong>co se s daty děje</strong>. Jejím nástrojem je <strong>diagram datových toků (DFD)</strong>.</p></div>
+
+<div class="slabel">Čtyři prvky DFD</div>
+<div class="svg-box">
+<svg viewBox="0 0 600 92" xmlns="http://www.w3.org/2000/svg" font-family="Inter,sans-serif">
+  <ellipse cx="70" cy="40" rx="46" ry="26" fill="#fff" stroke="#111827" stroke-width="1.6"/>
+  <text x="70" y="44" font-size="11.5" text-anchor="middle" fill="#111827">proces</text>
+  <text x="70" y="82" font-size="10" fill="#6b7280" text-anchor="middle">funkce zpracovávající data</text>
+  <line x1="185" y1="30" x2="285" y2="30" stroke="#111827" stroke-width="2"/>
+  <line x1="185" y1="52" x2="285" y2="52" stroke="#111827" stroke-width="2"/>
+  <text x="235" y="47" font-size="11.5" text-anchor="middle" fill="#111827">paměť</text>
+  <text x="235" y="82" font-size="10" fill="#6b7280" text-anchor="middle">úložiště = tabulka v DB</text>
+  <rect x="340" y="24" width="92" height="32" fill="#fff" stroke="#111827" stroke-width="1.8"/>
+  <text x="386" y="45" font-size="11.5" text-anchor="middle" fill="#111827">aktér</text>
+  <text x="386" y="82" font-size="10" fill="#6b7280" text-anchor="middle">okolí systému</text>
+  <path d="M480 40 L570 40" stroke="#111827" stroke-width="1.6" marker-end="url(#ard)"/>
+  <defs><marker id="ard" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#111827"/></marker></defs>
+  <text x="525" y="32" font-size="10.5" text-anchor="middle" fill="#111827">datový tok</text>
+  <text x="525" y="82" font-size="10" fill="#6b7280" text-anchor="middle">přenos dat</text>
+</svg>
+</div>
+
+<div class="slabel">Hierarchický rozklad — přepni úroveň</div>
+<div class="topo-row" id="dfdRow"></div>
+<div class="cvs-wrap"><canvas id="dfdC" width="600" height="290"></canvas><div class="cvs-hint">Postupný rozklad od celku k detailu — každá úroveň zpřesňuje jeden proces té předchozí</div></div>
+<div id="dfdDetail"></div>
+
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Datové paměti v DFD nejsou nic jiného</strong> než entitní typy z konceptuálního schématu. Datová a funkční analýza popisují tentýž systém — jen z jiného úhlu.</div></div>
+
+<div class="slabel">Minispecifikace — algoritmus elementární funkce</div>
+<div class="txt"><p>Rozkladem se dostaneme k funkcím, které už nemá smysl dělit. Stále ale nevíme, co se uvnitř kroužku odehrává. To popisuje <strong>minispecifikace</strong>.</p></div>
+<table class="info-table tight">
+  <thead><tr><th>Jazyk zápisu</th><th>Hodnocení</th></tr></thead>
+  <tbody>
+    <tr><td>Programovací jazyk</td><td>Příliš podrobný — zadavatel mu nerozumí, nemůže odsouhlasit</td></tr>
+    <tr><td>Vývojový diagram</td><td>Neumožňuje popsat vše dostatečně přesně</td></tr>
+    <tr><td><strong>Strukturovaný jazyk</strong></td><td><strong>Používá se</strong> — čeština s vyznačenými cykly, podmínkami a kontrolami</td></tr>
+  </tbody>
+</table>
+<div class="code"><span class="c">Minispecifikace 1.1 — Příjem do skladu</span>
+1. Suma = 0
+2. Pro všechen přijatý materiál na faktuře dodavatele proveď
+   3. zobraz seznam karet ze Sklad — atributy: karta, název, cidod, cenj, mnoz
+   4. <span class="s">uživatel</span> vybere kartu
+   5. zapamatuj Sklad.karta, Sklad.nazev, Sklad.cenj a Sklad.mnoz
+   6. zobraz formulář příjmu pro vybranou kartu
+        mnoz_prij : <span class="k">&gt; 0</span>
+        cizakaz   : <span class="k">kontrola na existenci v Zakázka nebo NULL</span>
+   7. <span class="s">uživatel</span> vyplní formulář pro přijímaný materiál
+   8. vypočti Sklad.mnoz = Sklad.mnoz + mnoz_prij
+      Suma = Suma + mnoz_prij * cen_prij
+   9. zapiš vyplněný formulář jako nový záznam do Pohyb
+  10. modifikuj v záznamu Sklad.karta hodnoty mnoz a cenj
+11. Konec cyklu pro jeden materiál
+12. Vypiš pro kontrolu seznam materiálu s celkovou cenou faktury</div>
+<div class="hl hl-green">${hlIcon('check')}<div><strong>Všimni si kontrol.</strong> Právě v minispecifikaci se rozhoduje, zda se do databáze dostanou nesmyslná data. Zápis také rozlišuje kroky prováděné systémem a kroky, v nichž jedná uživatel — což bude důležité při transakční analýze.</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 7 — STD
+══════════════════════════════════════ */
+const STAVY=[
+  {id:'obj', nm:'objednaný', x:90,  y:60,  desc:'Kniha byla objednána u nakladatele, zatím nedorazila.'},
+  {id:'skl', nm:'ve skladu', x:300, y:60,  desc:'Kniha dorazila a je zaevidována, ale ještě nebyla zařazena do fondu.'},
+  {id:'kni', nm:'v knihovně',x:300, y:160, desc:'Kniha je na místě a je možné si ji půjčit.\nentry: na místě = ano\nexit: na místě = ne'},
+  {id:'puj', nm:'půjčený',   x:500, y:160, desc:'Kniha je u čtenáře. Eviduje se, kdo a od kdy ji má.'},
+  {id:'opr', nm:'v opravě',  x:300, y:250, desc:'Poškozený exemplář je odeslán k opravě.'},
+  {id:'vyr', nm:'vyřazený',  x:90,  y:205, desc:'Konečný stav — kniha byla ztracena, zničena nebo skartována.'},
+];
+const PRECH=[
+  {f:'start',t:'obj',ev:'vydání objednávky',ac:'záznam objednávky'},
+  {f:'obj',  t:'skl',ev:'nákup',           ac:'záznam nákupu'},
+  {f:'skl',  t:'kni',ev:'inventarizace',   ac:'přír. číslo = přír'},
+  {f:'kni',  t:'puj',ev:'výpůjčení',       ac:'pujcen = id_cten'},
+  {f:'puj',  t:'kni',ev:'vrácení',         ac:'pujcen = NULL'},
+  {f:'kni',  t:'opr',ev:'poškozeno',       ac:'—'},
+  {f:'opr',  t:'kni',ev:'opraveno',        ac:'—'},
+  {f:'kni',  t:'vyr',ev:'ztraceno, zničeno',ac:'—'},
+  {f:'opr',  t:'vyr',ev:'zničeno',         ac:'—'},
+  {f:'puj',  t:'vyr',ev:'ztraceno u čtenáře',ac:'—'},
+  {f:'vyr',  t:'end',ev:'skartováno',      ac:'—'},
+];
+let stdCur='start', stdLog=[];
+function bStd(){return`
+<div class="txt"><p>Funkční analýza popisuje, <em>co</em> systém umí. Neříká však, <strong>kdy to smí udělat</strong>. Knihu nelze vrátit, pokud nebyla půjčena; uzávěrku nelze spustit uprostřed provozu. Tím se zabývá dynamická analýza a její <strong>stavový diagram (STD)</strong>.</p></div>
+
+<div class="slabel">Notace</div>
+<div class="def-grid">
+  <div class="def-card"><div class="def-term">Stav</div><div class="def-val">Situace, ve které se entita nachází. Kreslí se jako obdélník.</div></div>
+  <div class="def-card"><div class="def-term">Přechod</div><div class="def-val">Šipka. Nad ní podmínka (událost), pod ní akce, která se provede.</div></div>
+  <div class="def-card"><div class="def-term">Entry</div><div class="def-val">Činnost prováděná po každém vstupu do stavu.</div></div>
+  <div class="def-card"><div class="def-term">Exit</div><div class="def-val">Činnost prováděná před každým opuštěním stavu.</div></div>
+  <div class="def-card"><div class="def-term">Do</div><div class="def-val">Aktivita trvání stavu — stav může skončit „sám od sebe“.</div></div>
+  <div class="def-card"><div class="def-term">Vnitřní přechod</div><div class="def-val">Zpracování události beze změny stavu. Zapisuje se dovnitř stavu.</div></div>
+</div>
+
+<div class="slabel">Simulace — životní cyklus exempláře knihy</div>
+<div class="status-bar" id="stdStat">Klikni na tlačítko události a sleduj, jak se exemplář pohybuje mezi stavy.</div>
+<div class="brow" id="stdBtns"></div>
+<div class="log-box" id="stdLog"></div>
+<div class="cvs-wrap"><canvas id="stdC" width="600" height="310"></canvas><div class="cvs-hint">Zelený stav = aktuální · šedé přechody nejsou z tohoto stavu dostupné</div></div>
+<div class="brow"><button class="btn btn-g" onclick="stdReset()">↺ Začít znovu</button></div>
+
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Proč se to vyplatí kreslit:</strong> diagram odhalí otázky, které ze seznamu funkcí nejsou vidět. Co se stane s poškozenou knihou? Lze půjčit knihu, která je v opravě? Co s výpůjčkou, když čtenář knihu ztratí? Na tyto otázky musí zadavatel odpovědět dřív, než se začne programovat.</div></div>
+
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Návaznost na testování:</strong> stavový diagram je podkladem pro testování podle struktury stavů — kontroluje se, že systém hlídá nepřípustné přechody.</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 8 — RELAČNÍ MODEL A ALGEBRA
+══════════════════════════════════════ */
+const STUD=[
+  {id:'S1',jmeno:'Novák',rocnik:1,mesto:'Ostrava'},
+  {id:'S2',jmeno:'Dvořák',rocnik:2,mesto:'Brno'},
+  {id:'S3',jmeno:'Svoboda',rocnik:1,mesto:'Ostrava'},
+  {id:'S4',jmeno:'Krátká',rocnik:3,mesto:'Praha'},
+];
+const ZAPIS=[
+  {id:'S1',kurz:'Databáze'},
+  {id:'S2',kurz:'Databáze'},
+  {id:'S1',kurz:'Algoritmy'},
+  {id:'S4',kurz:'Sítě'},
+];
+
+function bRel(){return`
+<div class="txt"><p>Konceptuální schéma je nezávislé na technologii. <strong>Relační model</strong> je konkrétní způsob, jak je uložit: data se ukládají do <strong>tabulek (relací)</strong>, vztahy se realizují <strong>cizími klíči</strong>.</p></div>
+
+<div class="slabel">Převod ER na tabulky — tři pravidla</div>
+<table class="info-table">
+  <thead><tr><th>Kardinalita</th><th>Realizace v relačním modelu</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1:1</strong></td><td>Cizí klíč se vloží do jedné z tabulek — obvykle tam, kde je členství povinné</td></tr>
+    <tr><td><strong>1:N</strong></td><td>Cizí klíč se vloží do tabulky na straně <strong>N</strong></td></tr>
+    <tr><td><strong>M:N</strong></td><td>Vytvoří se <strong>průsečíková tabulka</strong> s cizími klíči obou stran</td></tr>
+  </tbody>
+</table>
+
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Vlastnosti databázové relace:</strong> každý řádek je jedinečný, na pořadí řádků ani sloupců nezáleží, každá hodnota je atomická (nedělitelná) a všechny hodnoty ve sloupci pocházejí z téže domény.</div></div>
+
+<div class="slabel">Relační algebra — vyber operaci a sleduj výsledek</div>
+<div class="txt"><p>Každý dotaz níže je skutečně vyhodnocen nad tabulkami vpravo. Klikni na kartu a porovnej vstupní relace s výsledkem.</p></div>
+<div id="raBox"></div>
+
+<div class="hl hl-green">${hlIcon('check')}<div><strong>Proč relační algebra?</strong> Je teoretickým základem jazyka SQL. Každý dotaz SELECT lze rozložit na kombinaci selekce, projekce a spojení — a databázový optimalizátor přesně to dělá, když hledá nejrychlejší způsob vykonání dotazu.</div></div>
+
+<div class="slabel">Totéž v SQL</div>
+<div class="code"><span class="c">-- Selekce: vyber řádky</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> Student <span class="k">WHERE</span> rocnik = <span class="s">1</span>;
+
+<span class="c">-- Projekce: vyber sloupce</span>
+<span class="k">SELECT</span> jmeno, mesto <span class="k">FROM</span> Student;
+
+<span class="c">-- Spojení přes cizí klíč</span>
+<span class="k">SELECT</span> s.jmeno, z.kurz
+<span class="k">FROM</span> Student s <span class="k">JOIN</span> Zapis z <span class="k">ON</span> s.id = z.id;</div>
+
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Pozor na spojení:</strong> studenti bez zápisu (Svoboda) se do výsledku běžného spojení nedostanou vůbec. Pokud je potřebujeme zachovat, musíme použít vnější spojení (LEFT JOIN).</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 9 — NORMALIZACE
+══════════════════════════════════════ */
+const NF_KROKY=[
+  {nf:'0NF', nm:'Nenormalizovaná tabulka',
+   pop:'Jedna velká tabulka se vším. Buňka „telefony“ obsahuje více hodnot najednou — porušuje atomičnost.',
+   anom:'Anomálie vkládání, mazání i aktualizace. Změna názvu katedry vyžaduje úpravu mnoha řádků.'},
+  {nf:'1NF', nm:'První normální forma',
+   pop:'Všechny atributy jsou <strong>atomické</strong> — každá buňka obsahuje právě jednu hodnotu. Vícehodnotový atribut jsme rozdělili do samostatných řádků.',
+   anom:'Data se ale opakují ještě víc. Redundance vzrostla, anomálie zůstávají.'},
+  {nf:'2NF', nm:'Druhá normální forma',
+   pop:'Je v 1NF a každý <strong>neklíčový atribut závisí na celém klíči</strong>, ne jen na jeho části. Údaje o studentovi závisely jen na části složeného klíče — oddělili jsme je.',
+   anom:'Zůstává tranzitivní závislost: vedoucí katedry závisí na katedře, ne přímo na studentovi.'},
+  {nf:'3NF', nm:'Třetí normální forma',
+   pop:'Je v 2NF a žádný neklíčový atribut <strong>tranzitivně nezávisí</strong> na klíči. Katedru s vedoucím jsme vyčlenili do vlastní tabulky.',
+   anom:'Redundance odstraněna. Změna vedoucího katedry = úprava jediného řádku.'},
+];
+let nfKrok=0;
+
+function bNorm(){return`
+<div class="txt"><p>Špatně navržené schéma vypadá zpočátku pohodlně — všechno v jedné tabulce. Problémy se ukážou až při používání v podobě <strong>anomálií</strong>.</p></div>
+
+<div class="slabel">Tři druhy anomálií</div>
+<div class="def-grid">
+  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Vkládání</div><div class="def-val">Nelze zapsat novou katedru, dokud na ni nemáme aspoň jednoho studenta.</div></div>
+  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Mazání</div><div class="def-val">Smazáním posledního studenta katedry ztratíme i informaci o katedře samotné.</div></div>
+  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Aktualizace</div><div class="def-val">Změna vedoucího katedry vyžaduje úpravu všech řádků — snadno vznikne nekonzistence.</div></div>
+</div>
+
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Funkční závislost A → B</strong> znamená: znám-li hodnotu A, je hodnota B jednoznačně určena. Rodné číslo → jméno platí (jedno rč patří jedné osobě). Opačně to neplatí — jménu odpovídá více osob. Normalizace je systematické odstraňování nevhodných funkčních závislostí.</div></div>
+
+<div class="slabel">Postupná normalizace — projdi krok za krokem</div>
+<div class="spills" id="nfPills"></div>
+<div id="nfDetail"></div>
+<div id="nfTables"></div>
+<div class="expl-nav">
+  <button class="btn btn-g" id="nfPrev" onclick="nfGo(-1)">← Předchozí</button>
+  <button class="btn btn-p" id="nfNext" onclick="nfGo(1)">Normalizovat dál →</button>
+</div>
+
+<div class="slabel">Přehled normálních forem</div>
+<table class="info-table">
+  <thead><tr><th>Forma</th><th>Podmínka</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1NF</strong></td><td>Všechny atributy jsou atomické</td></tr>
+    <tr><td><strong>2NF</strong></td><td>1NF + každý neklíčový atribut závisí na <em>celém</em> klíči</td></tr>
+    <tr><td><strong>3NF</strong></td><td>2NF + žádná tranzitivní závislost neklíčových atributů</td></tr>
+    <tr><td><strong>BCNF</strong></td><td>Každý determinant je kandidátním klíčem (přísnější než 3NF)</td></tr>
+  </tbody>
+</table>
+
+<div class="hl hl-green">${hlIcon('check')}<div><strong>Armstrongovy axiomy</strong> — pravidla pro odvozování závislostí: <strong>reflexivita</strong> (je-li B ⊆ A, pak A → B), <strong>rozšíření</strong> (A → B, pak AC → BC) a <strong>tranzitivita</strong> (A → B a B → C, pak A → C). Z nich se odvozuje uzávěr atributů a určují klíče schématu.</div></div>
+
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Kdy nenormalizovat?</strong> Vyšší normální forma znamená více tabulek a více spojení při dotazech. U datových skladů a systémů pro analýzy se proto někdy vědomě denormalizuje kvůli rychlosti čtení. V transakčních systémech je ale 3NF standardem.</div></div>`;}
+
+/* ══════════════════════════════════════
+   LEKCE 10 — IMPLEMENTACE A PROVOZ
+══════════════════════════════════════ */
+const CHYBOVKY=[
+  {spatne:'ERROR 0x8004005',dobre:'Soubor „studenti.csv“ se nepodařilo otevřít, protože jej používá jiný program. Zavřete jej a zkuste to znovu.',proc:'Konkrétnost a kontext — uživatel se dozví, co se stalo a co má udělat.'},
+  {spatne:'Neplatný vstup!',dobre:'Do pole „Ročník“ zadejte prosím číslo od 1 do 5.',proc:'Zpráva je vlídná, říká, které pole vadí a jaké hodnoty jsou přípustné.'},
+  {spatne:'Chyba. Kontaktujte správce.',dobre:'Rodné číslo neodpovídá zadanému datu narození. Zkontrolujte prosím oba údaje.',proc:'Uživatel může problém vyřešit sám, nemusí nikoho kontaktovat.'},
+];
+let chybSel=0;
+function bImpl(){return`
+<div class="txt"><p>Sebelépe navržený systém je k ničemu, pokud s ním uživatelé nedokážou nebo nechtějí pracovat. Návrh komunikace <strong>není kosmetika na konci projektu</strong>, ale samostatná část návrhu s vlastními pravidly.</p></div>
+
+<div class="slabel">Pravidla návrhu komunikace člověk — počítač</div>
+<div class="def-grid">
+  <div class="def-card"><div class="def-term">Prvořadost uživatele</div><div class="def-val">Formuláře se navrhují tak, jak je potřebuje uživatel, ne jak se hodí programátorovi.</div></div>
+  <div class="def-card"><div class="def-term">Jednotnost</div><div class="def-val">Obdobné situace se řeší obdobně. Uživatel pak odhadne chování i části, kterou nepoužil.</div></div>
+  <div class="def-card"><div class="def-term">Vlídnost</div><div class="def-val">Zprávy pozitivní, ne negativní. Humor do systému nepatří — opakovaný vtip přestává být vtipem.</div></div>
+  <div class="def-card"><div class="def-term">Respekt ke kontextu</div><div class="def-val">Nepředpokládáme, že si uživatel pamatuje předchozí krok.</div></div>
+  <div class="def-card"><div class="def-term">Minimalizace vstupu</div><div class="def-val">Co nejméně kliknutí a úderů na klávesnici — méně překlepů, rychlejší práce.</div></div>
+  <div class="def-card"><div class="def-term">Zpětná vazba</div><div class="def-val">Signál o přijetí každého požadavku, aby uživatel věděl, že se něco děje.</div></div>
+</div>
+
+<div class="slabel">Chybová hlášení — porovnej špatné a dobré</div>
+<div class="topo-row" id="chybRow"></div>
+<div id="chybBox"></div>
+
+<div class="hl hl-red">${hlIcon('warn')}<div><strong>Zásady pro chyby:</strong> systém musí přijmout jakákoli data a nesmí havarovat. Chyby <strong>neopravuje automaticky</strong> — uživatel se musí dozvědět, co se stalo. Závažná rozhodnutí si nechá opakovaně potvrdit. A zaznamenává chyby do souboru chyb, což je jediný spolehlivý zdroj informací o tom, kde uživatelé skutečně narážejí.</div></div>
+
+<div class="slabel">Návrh implementace</div>
+<table class="info-table">
+  <thead><tr><th>Část</th><th>Co obsahuje</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Systémový návrh</strong></td><td>Koncepce řešení, architektura, volba SŘBD, dělení na subsystémy, přidělení HW a SW, zařazení do kontextu ostatních IS</td></tr>
+    <tr><td><strong>Objektový návrh</strong></td><td>Upřesnění algoritmů, optimalizace přístupů k datům, indexová a transakční analýza, zabezpečení mezního provozu, systémové funkce</td></tr>
+  </tbody>
+</table>
+
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Transakce</strong> je základní logická jednotka zpracování, která musí proběhnout <strong>celá, nebo se vrátit na začátek</strong>. Klíčové pravidlo: <strong>do transakce nesmí být zahrnut vstup uživatele</strong> — jinak zůstanou data zamčená po celou dobu, kdy si uživatel odskočí na oběd.</div></div>
+
+<div class="slabel">Testování — tři pojmy, které se pletou</div>
+<div class="def-grid">
+  <div class="def-card"><div class="def-term">Validace</div><div class="def-val">Produkt odpovídá <strong>představám uživatele</strong>. Stavíme správný systém?</div></div>
+  <div class="def-card"><div class="def-term">Verifikace</div><div class="def-val">Produkt odpovídá <strong>odsouhlasené specifikaci</strong>. Stavíme systém správně?</div></div>
+  <div class="def-card"><div class="def-term">Testování</div><div class="def-val">Ověřování programu pomocí <strong>konečné sady</strong> příkladů.</div></div>
+</div>
+<div class="hl hl-amber">${hlIcon('warn')}<div>Slovo „konečné“ je podstatné: testováním <strong>nelze dokázat, že systém chyby nemá</strong> — lze jen ukázat, že na vyzkoušených případech chybu nevykazuje. Techniky: podle struktury dat, podle struktury programu (všechny větve) a podle struktury stavů (nepřípustné přechody).</div></div>
+
+<div class="slabel">Provoz a údržba — nejdelší etapa životního cyklu</div>
+<table class="info-table">
+  <thead><tr><th>Kategorie údržby</th><th>Náplň</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Opravárenská</strong></td><td>Odstranění nalezených chyb</td></tr>
+    <tr><td><strong>Adaptivní</strong></td><td>Přizpůsobení změnám prostředí (nový hardware, nový OS)</td></tr>
+    <tr><td><strong>Preventivní</strong></td><td>Zlepšení udržovatelnosti (aktualizace dokumentace, úprava kódu)</td></tr>
+    <tr><td><strong>Zdokonalovací</strong></td><td>Reakce na nové nebo změněné požadavky uživatele</td></tr>
+  </tbody>
+</table>
+<div class="hl hl-green">${hlIcon('check')}<div><strong>Kruh se uzavírá.</strong> Pouze první kategorie je opravou chyby — zbylé tři jsou důsledkem toho, že se mění svět kolem systému. Požadavky nakonec přerostou možnosti stávajícího řešení a objeví se myšlenka na systém nový. Životní cyklus začíná znovu od zadání.</div></div>`;}
+
+/* ══════════════════════════════════════
+   POMOCNÉ KRESLENÍ
+══════════════════════════════════════ */
+const C={blue:'#1a56db',blueD:'#1e40af',blue50:'#eff6ff',blue100:'#dbeafe',blue200:'#bfdbfe',
+  text:'#111827',sec:'#6b7280',hint:'#9ca3af',border:'#dbeafe',
+  green:'#16a34a',greenBg:'#f0fdf4',red:'#dc2626',redBg:'#fef2f2',amber:'#d97706',white:'#fff'};
+
+function ctxOf(id){const c=document.getElementById(id);if(!c)return null;const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);return x;}
+function rrect(x,rx,ry,w,h,r){x.beginPath();x.moveTo(rx+r,ry);x.arcTo(rx+w,ry,rx+w,ry+h,r);x.arcTo(rx+w,ry+h,rx,ry+h,r);x.arcTo(rx,ry+h,rx,ry,r);x.arcTo(rx,ry,rx+w,ry,r);x.closePath();}
+function arrow(x,x1,y1,x2,y2,col,w){
+  x.strokeStyle=col;x.fillStyle=col;x.lineWidth=w||1.5;
+  x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();
+  const a=Math.atan2(y2-y1,x2-x1),h=7;
+  x.beginPath();x.moveTo(x2,y2);
+  x.lineTo(x2-h*Math.cos(a-0.4),y2-h*Math.sin(a-0.4));
+  x.lineTo(x2-h*Math.cos(a+0.4),y2-h*Math.sin(a+0.4));
+  x.closePath();x.fill();
+}
+function label(x,t,px,py,col,size,align,bold){
+  x.fillStyle=col||C.text;x.font=(bold?'600 ':'')+(size||11)+'px Inter,sans-serif';
+  x.textAlign=align||'center';x.textBaseline='middle';x.fillText(t,px,py);
+}
+/* přepočet kliknutí na souřadnice canvasu */
+function canvasXY(canvas,ev){
+  const r=canvas.getBoundingClientRect();
+  return{x:(ev.clientX-r.left)*(canvas.width/r.width),y:(ev.clientY-r.top)*(canvas.height/r.height)};
+}
+
+/* ══════════════════════════════════════
+   L2 — PYRAMIDA IS
+══════════════════════════════════════ */
+function postRenderTypy(){renderPyr();}
+function renderPyr(){
+  const box=document.getElementById('pyrBox');if(!box)return;
+  box.innerHTML=PYR.map(p=>
+    `<button class="pyr-lvl${pyrSel===p.id?' on':''}" style="width:${p.w}%" onclick="pyrPick('${p.id}')">
+      <div class="pyr-nm">${p.nm}</div><div class="pyr-sub">${p.sub}</div></button>`).join('');
+  const p=PYR.find(x=>x.id===pyrSel);
+  document.getElementById('pyrDetail').innerHTML=`
+    <div class="expl-card">
+      <div class="expl-num">${p.uroven} úroveň řízení · období vzniku ${p.obd}</div>
+      <div class="expl-title">${p.nm} — ${p.sub}</div>
+      <div class="expl-desc">${p.pozn}</div>
+    </div>
+    <table class="info-table tight">
+      <tbody>
+        <tr><td style="width:38%"><strong>Účel</strong></td><td>${p.ucel}</td></tr>
+        <tr><td><strong>Výstupní informace</strong></td><td>${p.vystup}</td></tr>
+        <tr><td><strong>Organizace databáze</strong></td><td>${p.data}</td></tr>
+        <tr><td><strong>Podpora rozhodování</strong></td><td>${p.podpora}</td></tr>
+        <tr><td><strong>Typické aplikace</strong></td><td>${p.apl}</td></tr>
+      </tbody>
+    </table>`;
+}
+function pyrPick(id){pyrSel=id;renderPyr();}
+
+/* ══════════════════════════════════════
+   L3 — VODOPÁDOVÝ MODEL
+══════════════════════════════════════ */
+function postRenderCyklus(){
+  const c=document.getElementById('cyklC');if(!c)return;
+  c.onclick=e=>{
+    const p=canvasXY(c,e);
+    for(let i=0;i<FAZE.length;i++){
+      const b=fazeBox(i);
+      if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h){fazeSel=i;drawCyklus();renderFaze();return;}
+    }
+  };
+  drawCyklus();renderFaze();
+}
+function fazeBox(i){return{x:18+i*58,y:18+i*42,w:178,h:32};}
+function drawCyklus(){
+  const x=ctxOf('cyklC');if(!x)return;
+  x.fillStyle=C.blue50;x.fillRect(0,0,600,330);
+  // spojnice kaskády
+  for(let i=0;i<FAZE.length-1;i++){
+    const a=fazeBox(i),b=fazeBox(i+1);
+    x.strokeStyle=C.blue200;x.lineWidth=1.5;
+    x.beginPath();x.moveTo(a.x+34,a.y+a.h);x.lineTo(a.x+34,b.y+b.h/2);x.lineTo(b.x,b.y+b.h/2);x.stroke();
+    arrow(x,b.x-9,b.y+b.h/2,b.x-1,b.y+b.h/2,C.blue200,1.5);
+  }
+  // zpětné šipky
+  for(let i=1;i<FAZE.length;i++){
+    const a=fazeBox(i-1),b=fazeBox(i);
+    x.strokeStyle='#c7d7f5';x.lineWidth=1;x.setLineDash([3,3]);
+    x.beginPath();x.moveTo(b.x+b.w-14,b.y);x.lineTo(b.x+b.w-14,a.y+a.h/2);x.lineTo(a.x+a.w,a.y+a.h/2);x.stroke();
+    x.setLineDash([]);
+  }
+  FAZE.forEach((f,i)=>{
+    const b=fazeBox(i),on=i===fazeSel;
+    x.fillStyle=on?C.blue:C.white;x.strokeStyle=on?C.blue:C.blue200;x.lineWidth=on?2:1.2;
+    rrect(x,b.x,b.y,b.w,b.h,6);x.fill();x.stroke();
+    label(x,(i+1)+'. '+f.nm,b.x+b.w/2,b.y+b.h/2,on?'#fff':C.text,12.5,'center',true);
+  });
+  label(x,'vodopádový model',592,14,C.hint,10.5,'right',true);
+}
+function renderFaze(){
+  const f=FAZE[fazeSel];
+  const el=document.getElementById('fazeDetail');if(!el)return;
+  el.innerHTML=`
+    <div class="expl-card">
+      <div class="expl-num">Etapa ${fazeSel+1} z ${FAZE.length} · odpovídá: ${f.kdo}</div>
+      <div class="expl-title">${f.nm}</div>
+      <div class="expl-desc"><strong>Cíl:</strong> ${f.cil}<br><strong>Výstup:</strong> ${f.vyst}</div>
+    </div>
+    <div class="hl hl-amber" style="margin-bottom:1rem">${hlIcon('warn')}<div>${f.risk}</div></div>`;
+}
+
+/* ══════════════════════════════════════
+   L4 — SEDM OTÁZEK ZADÁNÍ
+══════════════════════════════════════ */
+function postRenderZadani(){renderOt7();}
+function renderOt7(){
+  const row=document.getElementById('ot7Row');if(!row)return;
+  row.innerHTML=OTAZKY7.map((o,i)=>`<button class="topo-pill${ot7Sel===i?' on':''}" onclick="ot7Pick(${i})">${o.k}</button>`).join('');
+  const o=OTAZKY7[ot7Sel];
+  document.getElementById('ot7Detail').innerHTML=`
+    <div class="expl-card">
+      <div class="expl-num">Otázka ${ot7Sel+1} ze 7</div>
+      <div class="expl-title">${o.t}</div>
+      <div class="expl-desc">${o.d}</div>
+    </div>
+    <div class="hl hl-green" style="margin-bottom:1rem">${hlIcon('check')}<div><strong>Příklad — IS domácí videotéka:</strong> ${o.p}</div></div>`;
+}
+function ot7Pick(i){ot7Sel=i;renderOt7();}
+
+/* ══════════════════════════════════════
+   L8 — RELAČNÍ ALGEBRA
+══════════════════════════════════════ */
+function postRenderRel(){raRender();}
+function tblHTML(cap,cols,rows,mark){
+  return`<table class="mini-tbl"><caption>${cap}</caption>
+    <thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>`<tr>${r.map((v,i)=>`<td class="${mark&&mark(r,i)||''}">${v}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+/* ══════════════════════════════════════
+   L9 — NORMALIZACE
+══════════════════════════════════════ */
+function postRenderNorm(){renderNf();}
+function renderNf(){
+  const pills=document.getElementById('nfPills');if(!pills)return;
+  pills.innerHTML=NF_KROKY.map((k,i)=>`<div class="sp${i<nfKrok?' done':''}${i===nfKrok?' on':''}"></div>`).join('');
+  const k=NF_KROKY[nfKrok];
+  document.getElementById('nfDetail').innerHTML=`
+    <div class="expl-card">
+      <div class="expl-num">${k.nf}</div>
+      <div class="expl-title">${k.nm}</div>
+      <div class="expl-desc">${k.pop}</div>
+    </div>
+    <div class="hl ${nfKrok===3?'hl-green':'hl-red'}" style="margin-bottom:.875rem">${hlIcon(nfKrok===3?'check':'warn')}<div>${k.anom}</div></div>`;
+  document.getElementById('nfTables').innerHTML=nfTables();
+  document.getElementById('nfPrev').disabled=(nfKrok===0);
+  const nx=document.getElementById('nfNext');
+  nx.disabled=(nfKrok===NF_KROKY.length-1);
+  nx.textContent=nfKrok===NF_KROKY.length-1?'Hotovo — schéma je v 3NF':'Normalizovat dál →';
+}
+function nfGo(d){nfKrok=Math.max(0,Math.min(NF_KROKY.length-1,nfKrok+d));renderNf();}
+function nfTables(){
+  if(nfKrok===0){
+    return tblHTML('Studium — vše v jedné tabulce',['rč','jméno','katedra','vedoucí','předměty'],
+      [['980315','Novák','KAM','Tran','Databáze, Sítě'],
+       ['990722','Dvořák','KAM','Tran','Databáze'],
+       ['001130','Krátká','KIP','Novotná','Grafika, Sítě']],
+      (r,i)=>i===4?'bad':'');
+  }
+  if(nfKrok===1){
+    return tblHTML('Studium — atomické hodnoty (1NF)',['rč','jméno','katedra','vedoucí','předmět'],
+      [['980315','Novák','KAM','Tran','Databáze'],
+       ['980315','Novák','KAM','Tran','Sítě'],
+       ['990722','Dvořák','KAM','Tran','Databáze'],
+       ['001130','Krátká','KIP','Novotná','Grafika'],
+       ['001130','Krátká','KIP','Novotná','Sítě']],
+      (r,i)=>(i===0||i===4)?'key':(i===1||i===2||i===3)?'bad':'');
+  }
+  if(nfKrok===2){
+    return`<div class="tbl-pair">
+      <div>${tblHTML('Student (2NF)',['rč','jméno','katedra','vedoucí'],
+        [['980315','Novák','KAM','Tran'],
+         ['990722','Dvořák','KAM','Tran'],
+         ['001130','Krátká','KIP','Novotná']],
+        (r,i)=>i===0?'key':(i===2||i===3)?'bad':'')}</div>
+      <div>${tblHTML('Zápis (2NF)',['rč','předmět'],
+        [['980315','Databáze'],['980315','Sítě'],['990722','Databáze'],
+         ['001130','Grafika'],['001130','Sítě']],
+        (r,i)=>'key')}</div></div>
+      <div class="txt" style="font-size:13px;margin-bottom:1rem"><p><span style="background:var(--red-bg);padding:1px 5px;border-radius:3px">Červeně</span> zůstává tranzitivní závislost: rč → katedra → vedoucí. Vedoucí nezávisí na studentovi, ale na katedře.</p></div>`;
+  }
+  return`<div class="tbl-pair">
+    <div>${tblHTML('Student (3NF)',['rč','jméno','katedra'],
+      [['980315','Novák','KAM'],['990722','Dvořák','KAM'],['001130','Krátká','KIP']],
+      (r,i)=>i===0?'key':i===2?'good':'')}
+    ${tblHTML('Katedra (3NF)',['katedra','vedoucí'],
+      [['KAM','Tran'],['KIP','Novotná']],(r,i)=>i===0?'key':'good')}</div>
+    <div>${tblHTML('Zápis (3NF)',['rč','předmět'],
+      [['980315','Databáze'],['980315','Sítě'],['990722','Databáze'],
+       ['001130','Grafika'],['001130','Sítě']],(r,i)=>'key')}</div></div>
+    <div class="txt" style="font-size:13px;margin-bottom:1rem"><p>Změna vedoucího katedry se nyní promítne úpravou <strong>jediného řádku</strong>. Katedru lze založit i bez studentů a smazáním posledního studenta o ni nepřijdeme.</p></div>`;
+}
+
+/* ══════════════════════════════════════
+   L10 — CHYBOVÁ HLÁŠENÍ
+══════════════════════════════════════ */
+function postRenderImpl(){renderChyb();}
+function renderChyb(){
+  const row=document.getElementById('chybRow');if(!row)return;
+  row.innerHTML=CHYBOVKY.map((c,i)=>`<button class="topo-pill${chybSel===i?' on':''}" onclick="chybPick(${i})">Příklad ${i+1}</button>`).join('');
+  const c=CHYBOVKY[chybSel];
+  document.getElementById('chybBox').innerHTML=`
+    <div class="tbl-pair">
+      <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)">
+        <div class="def-term" style="color:var(--red-m)">✗ Špatně</div>
+        <div class="def-val" style="font-family:ui-monospace,monospace;font-size:12.5px">${c.spatne}</div>
+      </div>
+      <div class="def-card" style="background:var(--green-bg);border-color:var(--green-b)">
+        <div class="def-term" style="color:var(--green-m)">✓ Dobře</div>
+        <div class="def-val">${c.dobre}</div>
+      </div>
+    </div>
+    <div class="hl hl-blue" style="margin-bottom:1rem">${hlIcon('info')}<div>${c.proc}</div></div>`;
+}
+function chybPick(i){chybSel=i;renderChyb();}
+
+/* ══════════════════════════════════════
+   DISPATCH
+══════════════════════════════════════ */
+function postRender(id){
+  const m={typy:postRenderTypy,cyklus:postRenderCyklus,zadani:postRenderZadani,er:postRenderEr,
+           dfd:postRenderDfd,std:postRenderStd,rel:postRenderRel,norm:postRenderNorm,
+           impl:postRenderImpl,quiz:postRenderQuiz};
+  if(m[id])m[id]();
+}
+
+/* ══════════════════════════════════════
+   GEOMETRIE — spojnice mezi okraji tvarů
+══════════════════════════════════════ */
+/* tvar: {k:'rect',x,y,w,h} | {k:'ell',x,y,rx,ry} | {k:'mem',x,y,w} */
+function edgePoint(s,tx,ty){
+  const dx=tx-s.x, dy=ty-s.y, len=Math.hypot(dx,dy)||1;
+  const ux=dx/len, uy=dy/len;
+  if(s.k==='ell'){
+    const t=1/Math.sqrt((ux*ux)/(s.rx*s.rx)+(uy*uy)/(s.ry*s.ry));
+    return{x:s.x+ux*t,y:s.y+uy*t};
+  }
+  const hw=(s.k==='mem'?s.w/2:s.w/2), hh=(s.k==='mem'?11:s.h/2);
+  const tX=Math.abs(ux)<1e-6?1e9:hw/Math.abs(ux);
+  const tY=Math.abs(uy)<1e-6?1e9:hh/Math.abs(uy);
+  const t=Math.min(tX,tY);
+  return{x:s.x+ux*t,y:s.y+uy*t};
+}
+/* spojí dva tvary šipkou; off = kolmé odsazení (pro obousměrné dvojice) */
+function connect(x,a,b,col,off,gap){
+  off=off||0;gap=gap==null?4:gap;
+  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+  const nx=-dy/len,ny=dx/len;
+  const A={...a,x:a.x+nx*off,y:a.y+ny*off};
+  const B={...b,x:b.x+nx*off,y:b.y+ny*off};
+  const p1=edgePoint(A,B.x,B.y), p2=edgePoint(B,A.x,A.y);
+  const ux=(p2.x-p1.x)/(Math.hypot(p2.x-p1.x,p2.y-p1.y)||1);
+  const uy=(p2.y-p1.y)/(Math.hypot(p2.x-p1.x,p2.y-p1.y)||1);
+  arrow(x,p1.x+ux*gap,p1.y+uy*gap,p2.x-ux*gap,p2.y-uy*gap,col||C.text,1.3);
+  return{mx:(p1.x+p2.x)/2,my:(p1.y+p2.y)/2};
+}
+
+/* ══════════════════════════════════════
+   L5 — ER DIAGRAM (přesná notace)
+══════════════════════════════════════ */
+function postRenderEr(){renderKard();}
+function renderKard(){
+  const row=document.getElementById('kardRow');if(!row)return;
+  row.innerHTML=KARD.map(k=>`<button class="topo-pill${kardSel===k.id?' on':''}" onclick="kardPick('${k.id}')">${k.nm}</button>`).join('');
+  const k=KARD.find(x=>x.id===kardSel);
+  document.getElementById('kardDetail').innerHTML=`
+    <div class="expl-card">
+      <div class="expl-title">${k.e1} — ${k.vz} — ${k.e2}</div>
+      <div class="expl-desc">${k.pop}<br><br><strong>Povinnost členství:</strong> ${k.pov}<br><strong>Realizace:</strong> ${k.real}</div>
+    </div>`;
+  const dr=document.getElementById('dekompRow');
+  if(dr)dr.style.display=(kardSel==='mn')?'flex':'none';
+  drawEr();
+}
+function kardPick(id){kardSel=id;if(id!=='mn')dekompOn=false;renderKard();}
+function toggleDekomp(){
+  dekompOn=!dekompOn;
+  const b=document.getElementById('dekompBtn');
+  if(b){b.textContent=dekompOn?'◀ Zpět na M:N':'Provést dekompozici ▶';b.className=dekompOn?'btn btn-g':'btn btn-p';}
+  drawEr();
+}
+function entBox(x,cx,cy,w,h,txt,hi){
+  x.fillStyle=hi?C.greenBg:C.white;x.strokeStyle=hi?C.green:C.text;x.lineWidth=hi?2.2:1.7;
+  x.fillRect(cx-w/2,cy-h/2,w,h);x.strokeRect(cx-w/2,cy-h/2,w,h);
+  label(x,txt,cx,cy,hi?'#14532d':C.text,12.5,'center');
+}
+function relDia(x,cx,cy,hw,txt){
+  x.beginPath();x.moveTo(cx-hw,cy);x.lineTo(cx,cy-26);x.lineTo(cx+hw,cy);x.lineTo(cx,cy+26);x.closePath();
+  x.fillStyle=C.white;x.fill();x.strokeStyle=C.text;x.lineWidth=1.7;x.stroke();
+  label(x,txt,cx,cy,C.text,11,'center');
+}
+/* Značky u entity: husí nožka přiléhá k entitě, za ní kroužek.
+   Vrací X, kde má začít souvislá čára ke vztahu. */
+function erMarks(x,edgeX,y,dir,many,pov){
+  x.strokeStyle=C.text;x.lineWidth=1.7;x.fillStyle=C.text;
+  let p=edgeX;
+  if(many){
+    const tip=edgeX+dir*15;
+    x.beginPath();
+    x.moveTo(tip,y);x.lineTo(edgeX,y-10);
+    x.moveTo(tip,y);x.lineTo(edgeX,y);
+    x.moveTo(tip,y);x.lineTo(edgeX,y+10);
+    x.stroke();
+    p=tip;
+  }
+  const cx=p+dir*7;
+  x.beginPath();x.arc(cx,y,6.5,0,Math.PI*2);
+  if(pov){x.fillStyle=C.text;x.fill();}else{x.fillStyle=C.white;x.fill();x.stroke();}
+  return cx+dir*6.5;
+}
+function drawEr(){
+  const x=ctxOf('erC');if(!x)return;
+  x.fillStyle=C.blue50;x.fillRect(0,0,600,200);
+  const k=KARD.find(v=>v.id===kardSel);
+  const y=112;
+
+  if(kardSel==='mn'&&dekompOn){
+    label(x,'Po dekompozici — vztah M:N nahrazen dvěma vztahy 1:N',300,26,C.green,11.5,'center',true);
+    const EW=92,EH=36;
+    entBox(x,58,y,EW,EH,'Učitel');
+    entBox(x,300,y,EW,EH,'Výuka',true);
+    entBox(x,542,y,EW,EH,'Předmět');
+    relDia(x,179,y,36,'UČÍ');
+    relDia(x,421,y,40,'SE TÝKÁ');
+    // Učitel —(1,povinné)— UČÍ —(N,povinné)— Výuka
+    let s=erMarks(x,58+EW/2,y,1,false,true);
+    x.beginPath();x.moveTo(s,y);x.lineTo(143,y);x.stroke();
+    let e=erMarks(x,300-EW/2,y,-1,true,true);
+    x.beginPath();x.moveTo(215,y);x.lineTo(e,y);x.stroke();
+    // Výuka —(N,povinné)— SE TÝKÁ —(1,nepovinné)— Předmět
+    s=erMarks(x,300+EW/2,y,1,true,true);
+    x.beginPath();x.moveTo(s,y);x.lineTo(381,y);x.stroke();
+    e=erMarks(x,542-EW/2,y,-1,false,false);
+    x.beginPath();x.moveTo(461,y);x.lineTo(e,y);x.stroke();
+    label(x,'nový entitní typ nese atributy vztahu (semestr, počet hodin…)',300,176,C.sec,10.5,'center');
+    return;
+  }
+
+  label(x,'Kardinalita '+k.nm,300,26,C.blue,11.5,'center',true);
+  const EW=120,EH=42,DW=52;
+  entBox(x,88,y,EW,EH,k.e1);
+  entBox(x,512,y,EW,EH,k.e2);
+  relDia(x,300,y,DW,k.vz);
+  // levá strana
+  const ls=erMarks(x,88+EW/2,y,1,k.l.many,k.l.pov);
+  x.strokeStyle=C.text;x.lineWidth=1.7;
+  x.beginPath();x.moveTo(ls,y);x.lineTo(300-DW,y);x.stroke();
+  // pravá strana
+  const rs=erMarks(x,512-EW/2,y,-1,k.r.many,k.r.pov);
+  x.beginPath();x.moveTo(300+DW,y);x.lineTo(rs,y);x.stroke();
+
+  label(x,(k.l.many?'mnoho':'jeden')+', '+(k.l.pov?'povinné':'nepovinné'),150,166,C.sec,10.5,'center');
+  label(x,(k.r.many?'mnoho':'jeden')+', '+(k.r.pov?'povinné':'nepovinné'),450,166,C.sec,10.5,'center');
+  if(kardSel==='mn')label(x,'⚠ relační SŘBD neumí realizovat přímo',300,188,C.amber,10.5,'center',true);
+}
+
+/* ══════════════════════════════════════
+   L6 — DFD (opravená geometrie)
+══════════════════════════════════════ */
+function postRenderDfd(){renderDfd();}
+function renderDfd(){
+  const row=document.getElementById('dfdRow');if(!row)return;
+  row.innerHTML=DFD_URV.map(u=>`<button class="topo-pill${dfdSel===u.id?' on':''}" onclick="dfdPick(${u.id})">${u.nm}</button>`).join('');
+  const u=DFD_URV.find(v=>v.id===dfdSel);
+  document.getElementById('dfdDetail').innerHTML=`
+    <div class="expl-card"><div class="expl-num">Úroveň rozkladu</div>
+    <div class="expl-title">${u.nm}</div><div class="expl-desc">${u.pop}</div></div>`;
+  drawDfd();
+}
+function dfdPick(i){dfdSel=i;renderDfd();}
+
+function dProc(x,s,txt,txt2,hi){
+  x.beginPath();x.ellipse(s.x,s.y,s.rx,s.ry,0,0,Math.PI*2);
+  x.fillStyle=hi?C.greenBg:C.white;x.fill();x.strokeStyle=hi?C.green:C.text;x.lineWidth=hi?2.2:1.5;x.stroke();
+  if(txt2){label(x,txt,s.x,s.y-8,C.text,11,'center');label(x,txt2,s.x,s.y+7,C.text,10.5,'center');}
+  else label(x,txt,s.x,s.y,C.text,11.5,'center');
+  return s;
+}
+function dMem(x,s,txt){
+  x.strokeStyle=C.text;x.lineWidth=2;
+  x.beginPath();x.moveTo(s.x-s.w/2,s.y-11);x.lineTo(s.x+s.w/2,s.y-11);x.stroke();
+  x.beginPath();x.moveTo(s.x-s.w/2,s.y+11);x.lineTo(s.x+s.w/2,s.y+11);x.stroke();
+  x.fillStyle=C.blue50;x.fillRect(s.x-s.w/2,s.y-10,s.w,20);
+  label(x,txt,s.x,s.y,C.text,10.5,'center');
+  return s;
+}
+function dAkt(x,s,txt){
+  x.fillStyle=C.white;x.strokeStyle=C.text;x.lineWidth=1.6;
+  x.fillRect(s.x-s.w/2,s.y-s.h/2,s.w,s.h);x.strokeRect(s.x-s.w/2,s.y-s.h/2,s.w,s.h);
+  label(x,txt,s.x,s.y,C.text,10.5,'center');
+  return s;
+}
+function drawDfd(){
+  const x=ctxOf('dfdC');if(!x)return;
+  x.fillStyle=C.blue50;x.fillRect(0,0,600,290);
+  const R=(px,py,w,h)=>({k:'rect',x:px,y:py,w:w,h:h});
+  const E=(px,py,rx,ry)=>({k:'ell',x:px,y:py,rx:rx,ry:ry});
+  const M=(px,py,w)=>({k:'mem',x:px,y:py,w:w});
+
+  if(dfdSel===0){
+    label(x,'Kontextový diagram — systém jako celek',300,22,C.blue,11.5,'center',true);
+    const sys=E(300,155,78,46);
+    const a1=R(80,88,110,28), a2=R(80,222,110,28), a3=R(520,155,110,28);
+    dAkt(x,a1,'Knihovník');dAkt(x,a2,'Nakladatel');dAkt(x,a3,'Čtenář');
+    dProc(x,sys,'KNIHOVNA','',false);
+    connect(x,a1,sys);connect(x,a2,sys);
+    connect(x,sys,a3,C.text,9);connect(x,a3,sys,C.text,9);
+    label(x,'systém je černá skříňka — nezajímá nás, co je uvnitř',300,268,C.sec,10.5,'center');
+
+  }else if(dfdSel===1){
+    label(x,'Úroveň 0 — základní funkce systému Knihovna',300,20,C.blue,11.5,'center',true);
+    x.strokeStyle=C.blue200;x.lineWidth=1.2;x.setLineDash([4,4]);
+    x.beginPath();x.ellipse(300,158,196,110,0,0,Math.PI*2);x.stroke();x.setLineDash([]);
+    const p1=E(215,88,44,27), p2=E(392,88,44,27), p3=E(300,225,48,28);
+    const m1=M(200,158,74), m2=M(400,158,86);
+    const aV=R(56,58,92,26), aVed=R(544,58,92,26), aC=R(52,246,90,26), aK=R(548,246,92,26);
+    dAkt(x,aV,'Vydavatel');dAkt(x,aVed,'Vedoucí');dAkt(x,aC,'Čtenář');dAkt(x,aK,'Knihovník');
+    dMem(x,m1,'Titul');dMem(x,m2,'Exemplář');
+    dProc(x,p1,'1','Nákup');dProc(x,p2,'2','Výpis');dProc(x,p3,'3','Výpůjčky');
+    connect(x,aV,p1);connect(x,aVed,p2);
+    connect(x,p1,m1);connect(x,m2,p2);connect(x,m1,p2,C.text,0);
+    connect(x,m1,p3);connect(x,p3,m2);
+    connect(x,p3,aC);connect(x,aK,p3);
+
+  }else if(dfdSel===2){
+    label(x,'Úroveň 1 — rozklad procesu 1 (Nákup) na podfunkce',300,20,C.blue,11.5,'center',true);
+    x.strokeStyle=C.blue200;x.lineWidth=1.2;x.setLineDash([4,4]);
+    x.beginPath();x.ellipse(300,160,188,106,0,0,Math.PI*2);x.stroke();x.setLineDash([]);
+    const p11=E(212,110,50,28), p14=E(390,110,50,28), p12=E(212,212,50,28), p13=E(390,212,50,28);
+    const mo=M(300,62,96), ma=M(255,161,60), mn=M(348,161,66);
+    const aV=R(56,96,92,26), aS=R(546,100,90,26), aK=R(548,200,92,26);
+    dAkt(x,aV,'Vydavatel');dAkt(x,aS,'Special');dAkt(x,aK,'Knihovník');
+    dMem(x,mo,'Objednávka');dMem(x,ma,'Autor');dMem(x,mn,'Napsal');
+    dProc(x,p11,'1.1','Objed_kniha');dProc(x,p14,'1.4','Dopln_kniha');
+    dProc(x,p12,'1.2','Nova_kniha',true);dProc(x,p13,'1.3','Zrus_kniha');
+    connect(x,aV,p11);connect(x,aS,p14);connect(x,aK,p13);
+    connect(x,p11,mo);connect(x,mo,p14);
+    connect(x,p12,ma);connect(x,p12,mn,C.text,0);
+    connect(x,p13,mn);
+    label(x,'číslování 1.1–1.4 zachovává vazbu na nadřazenou úroveň',300,278,C.sec,10.5,'center');
+
+  }else{
+    label(x,'Úroveň 2 — elementární funkce a její datové toky',300,20,C.blue,11.5,'center',true);
+    const p=E(300,150,58,34);
+    const aV=R(62,64,96,26);
+    const md=M(300,58,84), mt=M(516,68,88), mdd=M(96,150,96), mo=M(84,236,100),
+          ma=M(292,244,70), mn=M(444,240,74), me=M(520,158,86);
+    dAkt(x,aV,'Vydavatel');
+    dMem(x,md,'dodavka');dMem(x,mt,'novy_titul');dMem(x,mdd,'dat_dodavky');
+    dMem(x,mo,'Objednávka');dMem(x,ma,'autor');dMem(x,mn,'napsal');dMem(x,me,'Exemplář');
+    dProc(x,p,'1.2','Nova_kniha',true);
+    connect(x,aV,p);connect(x,md,p);connect(x,mdd,p);
+    connect(x,p,mt);connect(x,p,me);connect(x,p,mo);
+    connect(x,p,ma);connect(x,p,mn);
+    label(x,'zajímají nás už jen konkrétní atributy, se kterými funkce pracuje',300,280,C.sec,10.5,'center');
+  }
+}
+
+/* ══════════════════════════════════════
+   L7 — STAVOVÝ DIAGRAM (pravidelné rozvržení)
+══════════════════════════════════════ */
+const STD_POS={
+  start:{x:40,y:56}, obj:{x:158,y:56}, skl:{x:330,y:56},
+  kni:{x:330,y:160}, puj:{x:512,y:160},
+  opr:{x:330,y:262}, vyr:{x:150,y:262}, end:{x:40,y:262}
+};
+function postRenderStd(){stdRender();}
+function stdAvail(){return PRECH.filter(p=>p.f===stdCur);}
+function stdRender(){
+  const btns=document.getElementById('stdBtns');if(!btns)return;
+  const av=stdAvail();
+  btns.innerHTML=av.length
+    ? av.map(p=>`<button class="btn ${p.t==='vyr'||p.t==='end'?'btn-d':'btn-p'}" onclick="stdFire(${PRECH.indexOf(p)})">${p.ev}</button>`).join('')
+    : `<span style="font-size:13px;color:var(--sec);padding:8px 0">Exemplář dosáhl koncového stavu — jeho životní cyklus skončil.</span>`;
+  const st=STAVY.find(s=>s.id===stdCur);
+  const stat=document.getElementById('stdStat');
+  if(stdCur==='start')stat.innerHTML='<strong>Počáteční stav</strong> — exemplář zatím neexistuje. Vydáním objednávky jeho životní cyklus začíná.';
+  else if(stdCur==='end')stat.innerHTML='<strong>Koncový stav</strong> — exemplář byl skartován a záznam archivován.';
+  else stat.innerHTML='<strong>Aktuální stav: '+st.nm+'</strong> — '+st.desc.split('\n')[0];
+  const lg=document.getElementById('stdLog');
+  lg.innerHTML=stdLog.length?stdLog.map(l=>`<div class="lg ${l.c}">${l.t}</div>`).join(''):'<div class="lg info">Čeká se na první událost…</div>';
+  lg.scrollTop=lg.scrollHeight;
+  drawStd();
+}
+function stdFire(idx){
+  const p=PRECH[idx];
+  if(p.f!==stdCur)return;
+  stdLog.push({t:'► '+p.ev+(p.ac!=='—'?'  →  '+p.ac:''),c:p.t==='vyr'||p.t==='end'?'err':'ok'});
+  stdCur=p.t;
+  if(stdLog.length>20)stdLog.shift();
+  stdRender();
+}
+function stdReset(){stdCur='start';stdLog=[];stdRender();}
+function drawStd(){
+  const x=ctxOf('stdC');if(!x)return;
+  x.fillStyle=C.blue50;x.fillRect(0,0,600,310);
+  const SW=100,SH=36;
+  const shape=id=>{
+    const p=STD_POS[id];
+    if(id==='start'||id==='end')return{k:'ell',x:p.x,y:p.y,rx:11,ry:11};
+    return{k:'rect',x:p.x,y:p.y,w:SW,h:SH};
+  };
+  const av=stdAvail().map(p=>p.f+'>'+p.t);
+  /* dvojice v obou směrech dostanou kolmý odstup */
+  const pary={};
+  PRECH.forEach(p=>{const k=[p.f,p.t].sort().join('|');pary[k]=(pary[k]||0)+1;});
+
+  const popisky=[];
+  PRECH.forEach(p=>{
+    const on=av.includes(p.f+'>'+p.t);
+    const key=[p.f,p.t].sort().join('|');
+    let off=0;
+    if(pary[key]>1)off=(p.f<p.t?9:-9);
+    const m=connect(x,shape(p.f),shape(p.t),on?C.blue:'#d5e2f6',off,3);
+    if(on)popisky.push({p,m});
+  });
+  /* popisky až po všech šipkách, aby je nic nepřekrylo */
+  popisky.forEach(({p,m})=>{
+    const a=STD_POS[p.f],b=STD_POS[p.t];
+    const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+    const nx=-dy/len,ny=dx/len;
+    const px=m.mx+nx*14,py=m.my+ny*14;
+    x.font='600 9.5px Inter,sans-serif';
+    const w=x.measureText(p.ev).width;
+    x.fillStyle='#eff6ff';
+    rrect(x,px-w/2-5,py-8,w+10,16,4);x.fill();
+    x.strokeStyle=C.blue200;x.lineWidth=1;x.stroke();
+    label(x,p.ev,px,py,C.blue,9.5,'center',true);
+  });
+  /* počáteční a koncový uzel */
+  const s0=STD_POS.start,s1=STD_POS.end;
+  x.fillStyle=stdCur==='start'?C.green:C.text;
+  x.beginPath();x.arc(s0.x,s0.y,9,0,Math.PI*2);x.fill();
+  x.strokeStyle=stdCur==='end'?C.green:C.text;x.lineWidth=2;
+  x.beginPath();x.arc(s1.x,s1.y,11,0,Math.PI*2);x.stroke();
+  x.fillStyle=stdCur==='end'?C.green:C.text;
+  x.beginPath();x.arc(s1.x,s1.y,5.5,0,Math.PI*2);x.fill();
+
+  STAVY.forEach(s=>{
+    const p=STD_POS[s.id],on=s.id===stdCur;
+    x.fillStyle=on?C.greenBg:C.white;x.strokeStyle=on?C.green:C.text;x.lineWidth=on?2.4:1.4;
+    rrect(x,p.x-SW/2,p.y-SH/2,SW,SH,5);x.fill();x.stroke();
+    label(x,s.nm,p.x,p.y,on?'#14532d':C.text,11.5,'center',on);
+  });
+}
+
+/* ══════════════════════════════════════
+   SIMULÁTOR RELAČNÍ ALGEBRY
+   Podporuje: σ podmínka (Relace), π atributy (Relace),
+              Relace1 ⋈ Relace2, A ∪ B, A ∩ B, A − B
+      i SQL:  SELECT sloupce FROM tabulka WHERE podmínka
+══════════════════════════════════════ */
+const DB={
+  Student:{cols:['id','jmeno','rocnik','mesto'],
+    rows:[['S1','Novák','1','Ostrava'],['S2','Dvořák','2','Brno'],
+          ['S3','Svoboda','1','Ostrava'],['S4','Krátká','3','Praha']]},
+  Zapis:{cols:['id','kurz','znamka'],
+    rows:[['S1','Databáze','1'],['S2','Databáze','2'],
+          ['S1','Algoritmy','3'],['S4','Sítě','1']]},
+};
+const PRIKLADY=[
+  {q:'σ rocnik=1 (Student)', op:'σ', nm:'Selekce podle čísla',
+   d:'Vybere studenty prvního ročníku. Sloupce zůstanou, ubudou řádky.'},
+  {q:'σ mesto=Ostrava (Student)', op:'σ', nm:'Selekce podle textu',
+   d:'Podmínka funguje i na textových atributech, velikost písmen nerozhoduje.'},
+  {q:'π jmeno,mesto (Student)', op:'π', nm:'Projekce',
+   d:'Ponechá jen vybrané sloupce. Řádky zůstanou všechny.'},
+  {q:'π kurz (Zapis)', op:'π', nm:'Projekce s duplicitami',
+   d:'Databáze je zapsána na dva kurzy — sleduj, co se stane s duplicitním řádkem.'},
+  {q:'Student ⋈ Zapis', op:'⋈', nm:'Spojení',
+   d:'Spojí obě relace přes společný atribut id. Všimni si, kdo ve výsledku chybí.'},
+  {q:'π jmeno (σ rocnik=1 (Student))', op:'σπ', nm:'Selekce a projekce',
+   d:'Operace lze vnořovat — nejprve se vyhodnotí vnitřní závorka.'},
+  {q:'π jmeno,kurz (Student ⋈ Zapis)', op:'σπ', nm:'Projekce nad spojením',
+   d:'Typický dotaz: kdo je zapsán na jaký kurz, bez ostatních údajů.'},
+  {q:'π id (Student) − π id (Zapis)', op:'−', nm:'Rozdíl',
+   d:'Studenti, kteří nemají žádný zápis. Množinové operace vyžadují stejné atributy.'},
+  {q:'SELECT jmeno,rocnik FROM Student WHERE rocnik>1', op:'SQL', nm:'Totéž v SQL',
+   d:'Dotaz SELECT se rozloží na selekci σ a projekci π — přesně to dělá i optimalizátor.'},
+];
+let raIdx=0;
+
+function raRender(){
+  const box=document.getElementById('raBox');if(!box)return;
+  const cur=PRIKLADY[raIdx];
+  let res=null,err=null;
+  try{res=raEval(cur.q);}catch(e){err=e.message;}
+  box.innerHTML=`
+    <div class="ra-grid">
+      ${PRIKLADY.map((p,i)=>`
+        <button class="ra-card${i===raIdx?' on':''}" onclick="raPick(${i})">
+          <span class="ra-op${p.op.length>2?' sm':''}">${p.op}</span>
+          <span class="ra-nm">${p.nm}</span>
+        </button>`).join('')}
+    </div>
+    <div class="ra-query">${cur.q.replace(/</g,'&lt;')}</div>
+    <div class="txt" style="font-size:13px;margin-bottom:.75rem">${cur.d}</div>
+    ${err?`<div class="hl hl-red">${hlIcon('warn')}<div>${err}</div></div>`
+         :`<div class="hl hl-green" style="margin-bottom:.75rem">${hlIcon('check')}<div>${res.note}</div></div>
+           <div class="tbl-pair">
+             <div>
+               <div class="ra-lbl">Vstupní relace</div>
+               ${tblHTML('Student',DB.Student.cols,DB.Student.rows,(r,i)=>i===0?'key':'')}
+               ${tblHTML('Zapis',DB.Zapis.cols,DB.Zapis.rows,(r,i)=>i===0?'key':'')}
+             </div>
+             <div>
+               <div class="ra-lbl">Výsledek</div>
+               ${tblHTML(res.cols.join(' · ')+'  —  '+res.rows.length+' '+(res.rows.length===1?'záznam':res.rows.length<5?'záznamy':'záznamů'),res.cols,res.rows,()=> 'good')}
+             </div>
+           </div>`}`;
+}
+function raPick(i){raIdx=i;raRender();}
+
+/* ── vyhodnocení ─────────────────────────────── */
+function raEval(q){
+  q=(q||'').trim();
+  if(!q)throw new Error('zadej dotaz, například σ rocnik=1 (Student)');
+  if(/^select/i.test(q))return raSql(q);
+  return raAlg(q);
+}
+function raRel(name){
+  const key=Object.keys(DB).find(k=>k.toLowerCase()===name.trim().toLowerCase());
+  if(!key)throw new Error('relace „'+name.trim()+'“ neexistuje. K dispozici je Student a Zapis.');
+  return{cols:[...DB[key].cols],rows:DB[key].rows.map(r=>[...r]),note:'Relace '+key};
+}
+/* najde odpovídající uzavírací závorku */
+function matchPar(s,i){
+  let d=0;
+  for(let k=i;k<s.length;k++){
+    if(s[k]==='(')d++;
+    else if(s[k]===')'){d--;if(d===0)return k;}
+  }
+  throw new Error('chybí uzavírací závorka');
+}
+function raAlg(q){
+  q=q.trim();
+  /* vnější závorky */
+  if(q[0]==='('&&matchPar(q,0)===q.length-1)return raAlg(q.slice(1,-1));
+  /* binární operace na nejvyšší úrovni */
+  let d=0;
+  for(let i=0;i<q.length;i++){
+    if(q[i]==='(')d++;else if(q[i]===')')d--;
+    else if(d===0&&'⋈∪∩−-'.includes(q[i])){
+      const op=q[i],L=raAlg(q.slice(0,i)),R=raAlg(q.slice(i+1));
+      if(op==='⋈')return raJoin(L,R);
+      return raSet2(L,R,op);
+    }
+  }
+  /* unární σ / π */
+  if(q[0]==='σ'||q[0]==='π'){
+    const op=q[0];
+    const pi=q.indexOf('(');
+    if(pi<0)throw new Error('u operace '+op+' chybí závorka s relací');
+    const arg=q.slice(1,pi).trim();
+    const inner=raAlg(q.slice(pi+1,matchPar(q,pi)));
+    return op==='σ'?raSel(inner,arg):raProj(inner,arg);
+  }
+  return raRel(q);
+}
+function raSel(rel,cond){
+  const m=cond.match(/^\s*(\w+)\s*(>=|<=|<>|!=|=|>|<)\s*(.+?)\s*$/);
+  if(!m)throw new Error('podmínku „'+cond+'“ neumím přečíst. Použij tvar atribut=hodnota.');
+  const [,at,op,valRaw]=m;
+  const ci=rel.cols.findIndex(c=>c.toLowerCase()===at.toLowerCase());
+  if(ci<0)throw new Error('atribut „'+at+'“ v relaci není. Dostupné: '+rel.cols.join(', '));
+  const val=valRaw.replace(/^['"]|['"]$/g,'');
+  const num=v=>isNaN(parseFloat(v))?null:parseFloat(v);
+  const rows=rel.rows.filter(r=>{
+    const a=r[ci],na=num(a),nb=num(val);
+    const both=na!==null&&nb!==null;
+    switch(op){
+      case '=':return both?na===nb:a.toLowerCase()===val.toLowerCase();
+      case '>':return both?na>nb:a>val;
+      case '<':return both?na<nb:a<val;
+      case '>=':return both?na>=nb:a>=val;
+      case '<=':return both?na<=nb:a<=val;
+      default:return both?na!==nb:a.toLowerCase()!==val.toLowerCase();
+    }
+  });
+  return{cols:rel.cols,rows,
+    note:'<strong>Selekce σ</strong> vybrala řádky splňující <em>'+at+' '+op+' '+val+'</em>. Počet sloupců se nezměnil ('+rel.cols.length+'), z '+rel.rows.length+' řádků zbylo '+rows.length+'.'};
+}
+function raProj(rel,list){
+  const want=list.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!want.length)throw new Error('u projekce chybí seznam atributů');
+  const idx=want.map(w=>{
+    const i=rel.cols.findIndex(c=>c.toLowerCase()===w.toLowerCase());
+    if(i<0)throw new Error('atribut „'+w+'“ v relaci není. Dostupné: '+rel.cols.join(', '));
+    return i;
+  });
+  const seen=new Set(),rows=[];
+  rel.rows.forEach(r=>{
+    const nr=idx.map(i=>r[i]),k=nr.join('\u0001');
+    if(!seen.has(k)){seen.add(k);rows.push(nr);}
+  });
+  const dup=rel.rows.length-rows.length;
+  return{cols:idx.map(i=>rel.cols[i]),rows,
+    note:'<strong>Projekce π</strong> ponechala sloupce <em>'+want.join(', ')+'</em>. '+
+         (dup>0?'Vzniklo '+dup+' duplicitních řádků — relace je množina, proto byly odstraněny.':'Žádné duplicity nevznikly.')};
+}
+function raJoin(a,b){
+  const common=a.cols.filter(c=>b.cols.includes(c));
+  if(!common.length)throw new Error('relace nemají společný atribut, spojení nelze provést');
+  const ai=common.map(c=>a.cols.indexOf(c)),bi=common.map(c=>b.cols.indexOf(c));
+  const restB=b.cols.map((c,i)=>i).filter(i=>!bi.includes(i));
+  const cols=[...a.cols,...restB.map(i=>b.cols[i])];
+  const rows=[];
+  a.rows.forEach(ra=>b.rows.forEach(rb=>{
+    if(ai.every((x,k)=>ra[x]===rb[bi[k]]))rows.push([...ra,...restB.map(i=>rb[i])]);
+  }));
+  const lost=a.rows.filter(ra=>!b.rows.some(rb=>ai.every((x,k)=>ra[x]===rb[bi[k]]))).length;
+  return{cols,rows,
+    note:'<strong>Spojení ⋈</strong> proběhlo přes společný atribut <em>'+common.join(', ')+'</em>. '+
+         (lost>0?'Pozor: '+lost+' záznam(ů) levé relace nemá protějšek, a proto ve výsledku chybí — zachovalo by je až vnější spojení.':'Všechny záznamy našly protějšek.')};
+}
+function raSet2(a,b,op){
+  if(a.cols.length!==b.cols.length||!a.cols.every((c,i)=>c===b.cols[i]))
+    throw new Error('množinové operace vyžadují kompatibilní relace se stejnými atributy');
+  const key=r=>r.join('\u0001');
+  const bs=new Set(b.rows.map(key));
+  const as=new Set(a.rows.map(key));
+  let rows,nm;
+  if(op==='∪'){
+    rows=[...a.rows];b.rows.forEach(r=>{if(!as.has(key(r)))rows.push(r);});
+    nm='<strong>Sjednocení ∪</strong> — všechny záznamy z obou relací, duplicity jen jednou.';
+  }else if(op==='∩'){
+    rows=a.rows.filter(r=>bs.has(key(r)));
+    nm='<strong>Průnik ∩</strong> — pouze záznamy, které jsou v obou relacích.';
+  }else{
+    rows=a.rows.filter(r=>!bs.has(key(r)));
+    nm='<strong>Rozdíl −</strong> — záznamy z první relace, které nejsou ve druhé.';
+  }
+  return{cols:a.cols,rows,note:nm};
+}
+function raSql(q){
+  const m=q.match(/^\s*select\s+(.+?)\s+from\s+(\w+)(?:\s+where\s+(.+?))?\s*;?\s*$/i);
+  if(!m)throw new Error('očekávám tvar SELECT sloupce FROM tabulka [WHERE podmínka]');
+  let rel=raRel(m[2]);
+  if(m[3])rel=raSel(rel,m[3]);
+  if(m[1].trim()!=='*')rel=raProj(rel,m[1]);
+  rel.note='<strong>SQL dotaz</strong> se vyhodnotil jako '+(m[3]?'selekce σ a poté ':'')+'projekce π — právě takto jej rozloží i databázový optimalizátor.';
+  return rel;
+}
+
+/* ══════════════════════════════════════
+   KONTROLNÍ OTÁZKY KE KAPITOLÁM
+══════════════════════════════════════ */
+const CHECKS={
+  is:[
+    {q:'Co je rozdíl mezi daty a informacemi?',
+     opts:['Data jsou čísla, informace jsou texty','Data jsou surové údaje bez kontextu, informace vzniká jejich zasazením do souvislostí','Data jsou uložená v databázi, informace v paměti','Není mezi nimi rozdíl, jde o synonyma'],ans:1,
+     exp:'Data jsou faktické údaje bez interpretace — „25, 1998, Ostrava“. Teprve když víme, co znamenají (věk, rok narození, město), stávají se informací.'},
+    {q:'Jak se v relační databázi projeví entitní typ a jak entita?',
+     opts:['Entitní typ = řádek, entita = tabulka','Entitní typ = tabulka, entita = řádek (záznam)','Obojí je sloupec','Entitní typ = databáze, entita = tabulka'],ans:1,
+     exp:'Entitní typ je popis toho, co evidujeme (Student) — odpovídá tabulce. Entita je jeden konkrétní výskyt (Jan Novák) — odpovídá řádku.'},
+    {q:'Které tři subsystémy tvoří informační systém?',
+     opts:['Hardware, software, data','Lidé, informace, infrastruktura','Vstup, zpracování, výstup','Databáze, aplikace, síť'],ans:1,
+     exp:'IS není jen technika. Tvoří ho lidé (tvůrci, uživatelé, správci), informace (jako zdroj nebo komodita) a infrastruktura (jazyky, technologie, postupy, zázemí).'},
+    {q:'Co znamená, že jsou informace chápány jako ekonomický zdroj organizace?',
+     opts:['Organizace je prodává za peníze','Jsou aktivem, které je třeba spravovat stejně jako peníze nebo lidi','Musí se každý rok odepisovat','Patří do rozvahy jako hmotný majetek'],ans:1,
+     exp:'Informace jsou jedním z aktiv organizace. Podobně jako si organizace hlídá finance a zaměstnance, měla by cíleně spravovat i své informace. Prodej informací je naopak pojetí informace jako komodity.'},
+  ],
+  typy:[
+    {q:'Který typ IS se zaměřuje především na informace z okolí podniku?',
+     opts:['TPS — transakční systém','MIS — manažerský IS','EIS — exekutivní IS','Žádný, všechny sledují jen vnitřek podniku'],ans:2,
+     exp:'EIS slouží vrcholovému vedení a na rozdíl od MIS se zajímá o okolí podniku — konkurenci, trh, technické inovace. Interní data sumarizuje do nejvyšší úrovně agregace.'},
+    {q:'Co je typickou aplikací transakčního systému (TPS)?',
+     opts:['Strategické plánování na 5 let','Mzdy a evidence materiálu','Analýzy „co když“ s modely','Hodnocení investičních záměrů'],ans:1,
+     exp:'TPS zaznamenává každodenní transakce v režimu OLTP — mzdy, evidence materiálu, prodeje. Strategické plánování patří DSS a EIS.'},
+    {q:'Jak se mění charakter informací směrem k vrcholu řídicí pyramidy?',
+     opts:['Rostou podrobnosti a klesá neurčitost','Roste míra agregace a roste neurčitost','Nemění se, jen se mění uživatel','Klesá agregace i neurčitost'],ans:1,
+     exp:'Čím výše, tím agregovanější informace, tím méně strukturované problémy a tím větší neurčitost. Vrcholový manažer nepotřebuje jednotlivé faktury, ale trendy.'},
+    {q:'Co integruje systém ERP?',
+     opts:['Pouze účetnictví a mzdy','Všechny podnikové procesy — výrobu, prodej, sklad, finance, personalistiku','Jen komunikaci se zákazníky','Pouze dodavatelský řetězec'],ans:1,
+     exp:'ERP (Enterprise Resource Planning) je moderní rozšíření transakčních systémů integrující veškeré procesy podniku. Komunikaci se zákazníky řeší CRM, dodavatelský řetězec SCM.'},
+  ],
+  cyklus:[
+    {q:'Proč se vyplatí věnovat velkou pozornost etapě zadání?',
+     opts:['Protože je nejdelší z celého cyklu','Protože cena opravy chyby prudce roste s tím, jak pozdě se chyba najde','Protože se za ni platí nejvíc','Protože ji vyžaduje legislativa'],ans:1,
+     exp:'Nedorozumění v zadání by se při rozhovoru vyjasnilo za pár minut. Po nasazení znamená přepsání modulů, migraci dat a přeškolení uživatelů.'},
+    {q:'Která etapa životního cyklu je časově nejdelší?',
+     opts:['Analýza','Implementace (programování)','Testování','Provoz a údržba'],ans:3,
+     exp:'Vývoj trvá typicky jeden až dva roky, provoz a údržba desítky let. Proto rozhodnutí učiněná v návrhu ovlivňují práci mnoha lidí velmi dlouho.'},
+    {q:'Co je hlavní slabinou vodopádového modelu?',
+     opts:['Nemá definované výstupy etap','Uživatel vidí funkční systém až velmi pozdě','Nelze u něj dělat dokumentaci','Nedá se použít na velké projekty'],ans:1,
+     exp:'Pozdní zapojení uživatele znamená, že chybný výklad zadání se odhalí až při předání. Z této kritiky vyrostly iterativní a agilní přístupy.'},
+    {q:'Co je výstupem etapy analýzy?',
+     opts:['Funkční program a jeho dokumentace','Konceptuální schéma, DFD, minispecifikace a stavové diagramy','Podepsaná smlouva se zadavatelem','Nainstalovaný systém u uživatele'],ans:1,
+     exp:'Analýza je specifikace problému — vytváří modely systému. Program vzniká až v implementaci, instalace až při předání do provozu.'},
+  ],
+  zadani:[
+    {q:'Který z požadavků je nefunkční?',
+     opts:['Systém umožní zapsat nového studenta','Systém vytiskne seznam studentů','Odezva systému nesmí přesáhnout 2 sekundy','Systém spočítá průměrný prospěch'],ans:2,
+     exp:'Nefunkční požadavky popisují kvalitu a podmínky fungování — výkon, spolehlivost, bezpečnost, dostupnost. Ostatní možnosti popisují, co systém dělá, tedy funkce.'},
+    {q:'Jaký je rozdíl mezi aktérem a uživatelem?',
+     opts:['Jsou to synonyma','Aktér je role v okolí systému (i jiný systém), uživatel je člověk pracující se systémem','Aktér je vždy člověk, uživatel může být i program','Aktér má vždy vyšší oprávnění'],ans:1,
+     exp:'Aktér se kreslí do kontextového diagramu a může jím být i jiný systém. Uživatel se kreslí do modelu jednání. Nakladatel dodávající knihy je aktér, knihovník je uživatel.'},
+    {q:'K čemu slouží kontextový diagram kromě přehledu o okolí?',
+     opts:['K popisu algoritmů systému','K vymezení hranice systému — co do něj patří a co ne','K určení primárních klíčů','K plánování termínů projektu'],ans:1,
+     exp:'Nejasná hranice bývá zdrojem sporů v pozdějších etapách, kdy zadavatel čeká funkci, kterou dodavatel nepovažuje za součást dodávky.'},
+    {q:'Kdo vytváří zadání informačního systému?',
+     opts:['Programátor, který ho bude psát','Zadavatel projektu — ten, kdo systém potřebuje','Databázový administrátor','Tester'],ans:1,
+     exp:'Zadání vytváří zadavatel a smí být psáno běžným jazykem bez technických termínů — právě proto, že ho zadavatel musí umět odsouhlasit.'},
+  ],
+  er:[
+    {q:'Proč nelze vztah M:N realizovat v relační databázi přímo?',
+     opts:['Je příliš pomalý','Relační SŘBD ho neumí vyjádřit — je nutná dekompozice na dva vztahy 1:N','Porušoval by první normální formu','Lze ho realizovat přímo, dekompozice je volitelná'],ans:1,
+     exp:'Mezi oba entitní typy se vloží nový entitní typ a původní vztah se nahradí dvěma vztahy 1:N. Nový typ obvykle odpovídá něčemu skutečnému a nese vlastní atributy.'},
+    {q:'Co znamená plný kroužek na konci spojnice v ER diagramu?',
+     opts:['Vztahu se účastní mnoho entit','Členství ve vztahu je povinné','Jde o primární klíč','Vztah je ternární'],ans:1,
+     exp:'Plný kroužek = povinné členství, prázdný = nepovinné. Počet entit vyjadřuje samostatně „husí nožka“ (rozvětvení spojnice).'},
+    {q:'Jaký je vztah mezi kandidátním a primárním klíčem?',
+     opts:['Jsou to synonyma','Primární klíč je jeden zvolený kandidátní klíč','Kandidátní klíč je vždy složený, primární jednoduchý','Primární klíč nemusí být kandidátním klíčem'],ans:1,
+     exp:'Kandidátních klíčů může být více — u zaměstnance rodné číslo i kombinace jména, data a místa narození. Jeden z nich zvolíme jako primární identifikátor.'},
+    {q:'Kam se vloží cizí klíč při realizaci vztahu 1:N?',
+     opts:['Do tabulky na straně 1','Do tabulky na straně N','Do obou tabulek','Vytvoří se samostatná průsečíková tabulka'],ans:1,
+     exp:'Cizí klíč patří na stranu N — každý učitel odkazuje na jednu katedru. Průsečíková tabulka se vytváří až u vztahu M:N.'},
+  ],
+  dfd:[
+    {q:'Čemu odpovídá datová paměť v diagramu datových toků?',
+     opts:['Operační paměti serveru','Entitnímu typu z konceptuálního schématu, tedy tabulce v databázi','Vyrovnávací paměti procesoru','Zálohovacímu médiu'],ans:1,
+     exp:'Datová a funkční analýza popisují tentýž systém z jiného úhlu. Paměti v DFD nejsou nic jiného než entitní typy, které jsme určili v datové analýze.'},
+    {q:'Proč se DFD kreslí hierarchicky po úrovních?',
+     opts:['Kvůli normalizaci dat','Protože celý systém v jediném diagramu by byl nečitelný','Vyžaduje to relační model','Aby se ušetřil papír'],ans:1,
+     exp:'Postupný rozklad od celku k detailu udržuje diagramy čitelné. Číslování (1 → 1.1, 1.2 …) přitom zachovává vazbu na nadřazenou úroveň.'},
+    {q:'V jakém jazyce se zapisuje minispecifikace elementární funkce?',
+     opts:['V programovacím jazyce, aby ji šlo rovnou přeložit','Ve strukturovaném jazyce — běžnou češtinou s vyznačenými cykly a podmínkami','Pouze vývojovým diagramem','V jazyce SQL'],ans:1,
+     exp:'Programovací jazyk je příliš podrobný a zadavatel by ho neodsouhlasil, vývojový diagram zase neumožňuje popsat vše přesně. Proto strukturovaný jazyk.'},
+    {q:'Který prvek DFD se kreslí jako obdélník?',
+     opts:['Proces','Datová paměť','Aktér','Datový tok'],ans:2,
+     exp:'Aktér (okolí systému) = obdélník, proces = elipsa nebo kružnice, datová paměť = dvojice vodorovných čar, datový tok = šipka.'},
+  ],
+  std:[
+    {q:'Na jakou otázku odpovídá dynamická analýza, kterou funkční analýza neřeší?',
+     opts:['Jaká data systém uchovává','Kdy smí systém danou operaci provést','Kolik bude systém stát','Který programovací jazyk zvolit'],ans:1,
+     exp:'Funkční analýza popisuje, co systém umí. Stavový diagram doplňuje časovou návaznost — knihu nelze vrátit, pokud nebyla půjčena.'},
+    {q:'Co znamená vnitřní přechod „entry“ ve stavovém diagramu?',
+     opts:['Činnost prováděná po každém vstupu do stavu','Činnost prováděná před opuštěním stavu','Vstup uživatele do systému','Počáteční stav diagramu'],ans:0,
+     exp:'Entry se provede po každém vstupu do stavu, exit před každým jeho opuštěním a „do“ je aktivita trvání stavu. Zapisují se dovnitř stavu a stav přitom nemění.'},
+    {q:'K čemu je stavový diagram užitečný kromě dokumentace?',
+     opts:['K výpočtu velikosti databáze','Je podkladem pro testování podle struktury stavů','K určení normální formy','K výpočtu ceny projektu'],ans:1,
+     exp:'Testování podle struktury stavů kontroluje, že systém hlídá nepřípustné přechody — například pokus o vypůjčení knihy, která je právě v opravě.'},
+    {q:'Co bývá hlavním přínosem kreslení stavového diagramu už při analýze?',
+     opts:['Zrychlí běh aplikace','Odhalí otázky, které ze seznamu funkcí nejsou vidět','Nahradí ER diagram','Zmenší počet tabulek'],ans:1,
+     exp:'Diagram vynutí odpovědi na otázky typu „co s poškozenou knihou“ nebo „co s výpůjčkou, když čtenář knihu ztratí“ — a to dřív, než se začne programovat.'},
+  ],
+  rel:[
+    {q:'Která operace relační algebry vybírá řádky splňující podmínku?',
+     opts:['Projekce (π)','Selekce (σ)','Spojení (⋈)','Sjednocení (∪)'],ans:1,
+     exp:'Selekce vybírá řádky, projekce sloupce. Snadná pomůcka: selekce zkracuje tabulku, projekce ji zužuje.'},
+    {q:'Co se stane při běžném spojení se záznamy, které nemají protějšek?',
+     opts:['Doplní se hodnotami NULL','Do výsledku se nedostanou','Způsobí chybu dotazu','Zduplikují se'],ans:1,
+     exp:'Student bez zápisu se do výsledku běžného spojení nedostane. Zachovat ho lze jen vnějším spojením (LEFT JOIN), které chybějící hodnoty doplní NULL.'},
+    {q:'Která podmínka NEplatí pro databázovou relaci?',
+     opts:['Každý řádek je jedinečný','Hodnoty jsou atomické','Na pořadí řádků záleží','Hodnoty ve sloupci pocházejí z téže domény'],ans:2,
+     exp:'Relace je množina — na pořadí řádků ani sloupců nezáleží. Právě proto se v SQL musí pořadí explicitně vynutit klauzulí ORDER BY.'},
+    {q:'Jak se v relačním modelu realizuje vztah M:N?',
+     opts:['Cizím klíčem v jedné z tabulek','Cizími klíči v obou tabulkách','Průsečíkovou tabulkou s cizími klíči obou stran','Vnořenou tabulkou'],ans:2,
+     exp:'Průsečíková tabulka je relační podobou dekompozice — nový entitní typ, který nese cizí klíče obou původních tabulek a případně vlastní atributy.'},
+  ],
+  norm:[
+    {q:'Co vyjadřuje funkční závislost A → B?',
+     opts:['B je vždy větší než A','Znám-li hodnotu A, je hodnota B jednoznačně určena','A a B jsou vzájemně zaměnitelné','A a B musí být ve stejné tabulce'],ans:1,
+     exp:'Rodné číslo → jméno platí, protože jednomu rodnému číslu odpovídá jedna osoba. Opačně to neplatí — témuž jménu odpovídá více osob.'},
+    {q:'Jaká podmínka odlišuje 2NF od 1NF?',
+     opts:['Všechny atributy jsou atomické','Každý neklíčový atribut závisí na celém klíči, ne jen na jeho části','Neexistuje tranzitivní závislost','Každý determinant je kandidátním klíčem'],ans:1,
+     exp:'Atomičnost je podmínkou 1NF, odstranění tranzitivní závislosti 3NF a podmínka o determinantech definuje BCNF.'},
+    {q:'Jaký typ anomálie nastane, když nelze zapsat novou katedru bez studenta?',
+     opts:['Anomálie vkládání','Anomálie mazání','Anomálie aktualizace','Anomálie spojení'],ans:0,
+     exp:'Anomálie vkládání brání zapsat údaj, protože chybí jiný, logicky nezávislý údaj. Mazání naopak ničí informaci, aktualizace vede k nekonzistenci.'},
+    {q:'Kdy může být rozumné schéma vědomě denormalizovat?',
+     opts:['Nikdy, 3NF je vždy povinná','U datových skladů a analytických systémů kvůli rychlosti čtení','V transakčních systémech s mnoha zápisy','Když má tabulka málo sloupců'],ans:1,
+     exp:'Vyšší normální forma znamená více tabulek a více spojení při dotazech. U analytických systémů se proto někdy denormalizuje. V transakčních systémech zůstává 3NF standardem.'},
+  ],
+  impl:[
+    {q:'Jaký je rozdíl mezi validací a verifikací?',
+     opts:['Jsou to synonyma','Validace ověřuje shodu s představou uživatele, verifikace shodu se specifikací','Validace se dělá před verifikací vždy automaticky','Verifikace se týká jen databáze'],ans:1,
+     exp:'Validace se ptá „stavíme správný systém?“, verifikace „stavíme systém správně?“. Systém může přesně odpovídat specifikaci a přesto být pro uživatele k ničemu.'},
+    {q:'Proč nesmí být do transakce zahrnut vstup uživatele?',
+     opts:['Uživatel by mohl zadat chybná data','Data by zůstala zamčená po celou dobu, kdy uživatel nereaguje','Transakce nepodporují klávesnici','Zpomalilo by to vykreslování formuláře'],ans:1,
+     exp:'Řešením je rozdělení: krátká transakce načte data do pomocných polí, uživatel pracuje mimo transakci a druhá krátká transakce výsledek zapíše.'},
+    {q:'Které chybové hlášení odpovídá principu vlídnosti?',
+     opts:['„ERROR 0x8004005“','„Neplatný vstup!“','„Do pole Ročník zadejte prosím číslo od 1 do 5.“','„Chyba. Kontaktujte správce.“'],ans:2,
+     exp:'Hlášení má být srozumitelné, konkrétní, v kontextu a má uživateli říct, co udělat dál. Kód chyby ani obecné „neplatný vstup“ mu nepomohou.'},
+    {q:'Která kategorie údržby reaguje na nové požadavky uživatele?',
+     opts:['Opravárenská','Adaptivní','Preventivní','Zdokonalovací'],ans:3,
+     exp:'Opravárenská odstraňuje chyby, adaptivní reaguje na změny prostředí, preventivní zlepšuje udržovatelnost a zdokonalovací řeší nové či změněné požadavky.'},
+  ],
+};
+
+/* ══════════════════════════════════════
+   ZÁVĚREČNÝ KVÍZ
+══════════════════════════════════════ */
+const QS=[
+  {q:'Co je výsledkem datové analýzy?',opts:['Diagram datových toků','Konceptuální schéma','Minispecifikace funkcí','Systémový návrh'],ans:1,
+   exp:'Konceptuální schéma zpřesňuje zadání tak, aby bylo úplné, jednoznačné, přesné a bezesporné. Obsahuje ER diagram, seznam entit a vztahů, datový slovník a integritní omezení.'},
+  {q:'Ve kterém pořadí jdou etapy vodopádového modelu?',opts:['Analýza → zadání → návrh → implementace','Zadání → analýza → návrh implementace → implementace → testování → předání → provoz','Zadání → implementace → analýza → testování','Návrh → zadání → analýza → provoz'],ans:1,
+   exp:'Každá etapa musí být dokončena, než začne následující, a její výstup je vstupem té další. Zpětné šipky znamenají návrat při zjištění chyby — čím delší, tím dražší.'},
+  {q:'Který požadavek je funkční?',opts:['Systém musí být dostupný 24/7','Systém umožní vyhledat studenta podle příjmení','Odezva nesmí překročit 2 sekundy','Systém musí běžet na Windows i Linuxu'],ans:1,
+   exp:'Funkční požadavek říká, co systém dělá. Dostupnost, odezva a přenositelnost jsou požadavky nefunkční — popisují kvalitu a podmínky fungování.'},
+  {q:'Co znamená prázdný kroužek na konci spojnice v ER diagramu?',opts:['Povinné členství ve vztahu','Nepovinné členství ve vztahu','Kardinalitu M:N','Cizí klíč'],ans:1,
+   exp:'Prázdný kroužek = nepovinné členství, plný = povinné. Počet entit ve vztahu vyjadřuje samostatně „husí nožka“.'},
+  {q:'Kolik vztahů vznikne dekompozicí jednoho vztahu M:N?',opts:['Jeden vztah 1:1','Dva vztahy 1:N','Tři vztahy 1:1','Žádný, vztah zanikne'],ans:1,
+   exp:'Mezi oba entitní typy se vloží nový entitní typ a původní vztah M:N se nahradí dvěma vztahy 1:N směřujícími do něj.'},
+  {q:'Který prvek DFD odpovídá tabulce v budoucí databázi?',opts:['Proces','Datový tok','Datová paměť','Aktér'],ans:2,
+   exp:'Datové paměti v DFD jsou entitní typy z konceptuálního schématu. Datová a funkční analýza popisují tentýž systém z různých úhlů.'},
+  {q:'Co popisuje minispecifikace?',opts:['Vztahy mezi entitami','Algoritmus elementární funkce nejnižší úrovně DFD','Stavy, ve kterých se entita může nacházet','Rozpočet projektu'],ans:1,
+   exp:'Rozkladem DFD se dostaneme k funkcím, které už nemá smysl dělit. Minispecifikace popisuje, co se uvnitř takové funkce odehrává — včetně kontrol vstupů.'},
+  {q:'Který stavový prvek se provede před každým opuštěním stavu?',opts:['Entry','Exit','Do','Trigger'],ans:1,
+   exp:'Exit se provede před každým opuštěním stavu, entry po každém vstupu do něj a „do“ je aktivita trvání stavu.'},
+  {q:'Která operace relační algebry vybírá sloupce?',opts:['Selekce (σ)','Projekce (π)','Spojení (⋈)','Rozdíl (−)'],ans:1,
+   exp:'Projekce vybírá sloupce a odstraňuje duplicitní řádky. Selekce naopak vybírá řádky splňující podmínku.'},
+  {q:'Schéma je v 1NF a každý neklíčový atribut závisí na celém klíči. V jaké je normální formě?',opts:['Zůstává v 1NF','2NF','3NF','BCNF'],ans:1,
+   exp:'To je přesně definice 2NF. Pro 3NF by navíc nesměla existovat tranzitivní závislost neklíčových atributů na klíči.'},
+  {q:'Co říká Armstrongův axiom tranzitivity?',opts:['Je-li B podmnožinou A, pak A → B','Platí-li A → B, pak AC → BC','Platí-li A → B a B → C, pak A → C','Každý determinant je kandidátním klíčem'],ans:2,
+   exp:'Tranzitivita umožňuje řetězit závislosti. První možnost je reflexivita, druhá rozšíření. Poslední tvrzení je definice BCNF, nikoli axiom.'},
+  {q:'Která kategorie údržby reaguje na přechod na nový operační systém?',opts:['Opravárenská','Adaptivní','Preventivní','Zdokonalovací'],ans:1,
+   exp:'Adaptivní údržba přizpůsobuje systém změnám prostředí — novému hardwaru nebo nové verzi operačního systému. Není to oprava chyby.'},
+];
+
+let qI=0,qDone=false;
+let qShuffledOpts=[];
+
+function initQuizOrder(){
+  qOrder=shuffle(QS.map((_,i)=>i));
+  qShuffledOpts=qOrder.map(qi=>shuffle(QS[qi].opts.map((_,i)=>i)));
+  saveState();
+}
+function curQ(){return QS[qOrder[qI]];}
+function curOpts(){const q=curQ(),idxs=qShuffledOpts[qI];return idxs.map(i=>q.opts[i]);}
+function curCorrectNew(){const q=curQ(),idxs=qShuffledOpts[qI];return idxs.indexOf(q.ans);}
+
+function bQuiz(){return`<div class="txt"><p>Závěrečný kvíz prověří látku ze všech deseti kapitol. Otázky i odpovědi se míchají, takže si test můžeš zopakovat vícekrát.</p></div><div id="qBox"></div>`;}
+function postRenderQuiz(){
+  qI=0;qDone=false;qResults=[];
+  if(qOrder.length!==QS.length)initQuizOrder();
+  renderQ();
+}
+function renderQ(){
+  const box=document.getElementById('qBox');if(!box)return;
+  if(qI>=QS.length){renderQuizResults(box);return;}
+  const q=curQ(),opts=curOpts(),pct=Math.round(qI/QS.length*100);
+  box.innerHTML=`
+    <div class="q-prog-wrap"><div class="q-prog" style="width:${pct}%"></div></div>
+    <div class="q-meta">Otázka ${qI+1} z ${QS.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-opts">${opts.map((o,i)=>`<button class="q-opt" id="qo${i}" onclick="qAns(${i})">${o}</button>`).join('')}</div>
+    <div id="qExp" class="q-exp" style="display:none"></div>
+    <button id="qNxt" class="btn btn-p" style="display:none" onclick="qI++;qDone=false;renderQ()">${qI===QS.length-1?'Zobrazit výsledek →':'Další otázka →'}</button>`;
+}
+function qAns(i){
+  if(qDone)return;qDone=true;
+  const correct=curCorrectNew();
+  qResults.push(i===correct);
+  for(let j=0;j<curOpts().length;j++){
+    const b=document.getElementById('qo'+j);b.disabled=true;
+    if(j===correct)b.classList.add('correct');
+    else if(j===i)b.classList.add('wrong');
+  }
+  document.getElementById('qExp').style.display='block';
+  document.getElementById('qExp').textContent=curQ().exp;
+  document.getElementById('qNxt').style.display='inline-block';
+  saveState();
+}
+function renderQuizResults(box){
+  saveState();
+  const sc=qResults.filter(r=>r).length;
+  const wrongItems=qResults.map((r,i)=>r?null:qOrder[i]).filter(v=>v!==null);
+  const grade=sc===QS.length?'Výborně! Perfektní skóre.':sc>=10?'Skvělá práce — drobné mezery.':sc>=7?'Dobrý základ. Projdi si chybné odpovědi níže.':'Doporučuji projít kurz znovu.';
+  const wrongHTML=wrongItems.length===0?'':`
+    <div style="text-align:left;margin-top:1.25rem">
+      <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--sec);margin-bottom:.75rem">Chybné odpovědi — správná řešení</div>
+      ${wrongItems.map(qi=>{
+        const q=QS[qi];
+        return`<div style="background:var(--red-bg);border:1px solid var(--red-b);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.5rem">
+          <div style="font-size:13px;font-weight:600;color:var(--red-t);margin-bottom:4px">${q.q}</div>
+          <div style="font-size:12px;color:var(--green-m)">✓ ${q.opts[q.ans]}</div>
+          <div style="font-size:12px;color:var(--sec);margin-top:4px;line-height:1.5">${q.exp}</div>
+        </div>`;}).join('')}
+    </div>`;
+  box.innerHTML=`<div class="complete">
+    <div class="complete-star">★</div>
+    <div class="complete-score">${sc} / ${QS.length}</div>
+    <div style="display:flex;gap:4px;justify-content:center;margin-bottom:.75rem;flex-wrap:wrap">
+      ${qResults.map((r,i)=>`<span class="qdot ${r?'ok':'bad'}" title="${QS[qOrder[i]].q.slice(0,40)}…"></span>`).join('')}
+    </div>
+    <div class="complete-sub">${grade}</div>
+    <button class="btn btn-p" onclick="qI=0;qDone=false;qResults=[];initQuizOrder();renderQ()">Zkusit znovu (nové pořadí)</button>
+    ${wrongHTML}
+  </div>`;
+}
+
+/* ══════════════════════════════════════
+   DOKONČENÍ A SLUŽBY
+══════════════════════════════════════ */
+function renderComplete(){
+  const sc=qResults.filter(r=>r).length;
+  let chkOk=0,chkTotal=0;
+  Object.keys(CHECKS).forEach(k=>{
+    chkTotal+=CHECKS[k].length;
+    const st=chkState[k]||{};
+    CHECKS[k].forEach((q,i)=>{if(st[i]===q.ans)chkOk++;});
+  });
+  document.getElementById('lessonCard').innerHTML=`
+    <div class="lbody">
+      <div class="complete">
+        <div class="complete-star">★</div>
+        <div class="complete-title">Kurz dokončen!</div>
+        <div class="complete-score">${sc} / ${QS.length}</div>
+        <div class="complete-sub">
+          V závěrečném kvízu jsi získal ${sc} z ${QS.length} bodů.<br>
+          V kontrolních otázkách ${chkOk} z ${chkTotal} správně.<br><br>
+          Prošel jsi celou cestu od pojmu informačního systému přes zadání, datovou, funkční
+          i dynamickou analýzu až po relační model, normalizaci a provoz. Gratuluji!
+        </div>
+        <button class="btn btn-p" onclick="restart()">Začít kurz znovu</button>
+      </div>
+    </div>`;
+}
+function showToast(msg,ms=2800){
+  const t=document.getElementById('toast');if(!t)return;
+  t.textContent=msg;t.style.display='block';t.style.opacity='1';
+  clearTimeout(t._to);
+  t._to=setTimeout(()=>{t.style.opacity='0';setTimeout(()=>{t.style.display='none';},300);},ms);
+}
+function confirmReset(){
+  if(done.size===0&&curL===0&&Object.keys(chkState).length===0){showToast('Žádný postup k resetování.');return;}
+  if(confirm('Opravdu resetovat celý postup? Tuto akci nelze vrátit zpět.')){
+    restart();showToast('Postup byl resetován.');
+  }
+}
+function restart(){
+  curL=0;done.clear();qResults=[];qI=0;qOrder=[];chkState={};
+  fazeSel=0;ot7Sel=0;kardSel='11';dekompOn=false;dfdSel=1;operSel='sel';nfKrok=0;chybSel=0;pyrSel='tps';
+  stdCur='start';stdLog=[];
+  clearState();render();updateProg();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* INIT */
+loadState();
+updateProg();
+render();
+if(done.size>0)showToast('Vítej zpět! Postup byl obnoven ('+done.size+'/'+LESSONS.length+' lekcí).');
+
+</script>
+</body>
+</html>
