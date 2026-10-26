@@ -313,7 +313,6 @@ function render(){
   const l=LESSONS[curL];const isLast=curL===LESSONS.length-1;
   const bMap={is:bIs,typy:bTypy,cyklus:bCyklus,zadani:bZadani,er:bEr,dfd:bDfd,std:bStd,rel:bRel,norm:bNorm,impl:bImpl,quiz:bQuiz};
   let body=(bMap[l.id]||bIs)();
-  if(l.id!=='quiz'&&CHECKS[l.id])body+=chkBlock(l.id);
   document.getElementById('lessonCard').innerHTML=
     `<div class="lhead"><div class="lbadge ${l.badge}"><div class="dot"></div>${l.bTxt}</div><div class="ltitle">${l.title}</div><div class="lsub">${l.sub}</div></div>`+
     `<div class="lbody">${body}</div>`+
@@ -368,15 +367,15 @@ function chkAns(id,i,j){
    LEKCE 1 — INFORMAČNÍ SYSTÉM
 ══════════════════════════════════════ */
 function bIs(){return`
-<div class="txt"><p>Informační systém je soubor <strong>lidí, technologií, dat a procesů</strong>, které společně sbírají, zpracovávají, uchovávají a distribuují informace. Není to tedy jen počítač ani jen software — bez lidí a bez zavedených postupů systém nefunguje.</p></div>
+<div class="txt"><p>Informační systém tvoří <strong>lidé, technologie, data a postupy</strong>. Společně sbírají, zpracovávají, ukládají a předávají informace. Nejde jen o počítač nebo program — bez lidí a pravidel systém nefunguje.</p></div>
 
-<div class="hl hl-blue">${hlIcon('info')}<div><strong>Data vs. informace.</strong> Data jsou surové údaje bez kontextu — „25, 1998, Ostrava“. Informace vzniká, až když data dostanou význam: věk osoby, rok narození, město bydliště. Databáze uchovává data, hodnotu z nich dělá teprve jejich zasazení do souvislostí.</div></div>
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Data vs. informace.</strong> Data jsou holé údaje: „25, Ostrava“. Informace vznikne, až když dostanou význam: „je mu 25 a bydlí v Ostravě“.</div></div>
 
-<div class="slabel">Tři subsystémy každého IS</div>
+<div class="slabel">Tři části každého IS</div>
 <div class="def-grid">
-  <div class="def-card"><div class="def-term">Lidé</div><div class="def-val">Tvůrci informací, uživatelé a správci. Bez správných lidí na správných místech systém nefunguje.</div></div>
-  <div class="def-card"><div class="def-term">Informace</div><div class="def-val">Buď jako ekonomický zdroj (podpora činnosti organizace), nebo jako komodita (informace je sám produkt).</div></div>
-  <div class="def-card"><div class="def-term">Infrastruktura</div><div class="def-val">Jazyky (SQL, XML), technologie (HW, SW, sítě), pracovní postupy a materiální zabezpečení.</div></div>
+  <div class="def-card"><div class="def-term">Lidé</div><div class="def-val">Uživatelé, tvůrci a správci systému.</div></div>
+  <div class="def-card"><div class="def-term">Informace</div><div class="def-val">To, s čím systém pracuje.</div></div>
+  <div class="def-card"><div class="def-term">Infrastruktura</div><div class="def-val">Hardware, software, sítě a pracovní postupy.</div></div>
 </div>
 
 <div class="slabel">Databázové pojmy — od reality k tabulce</div>
@@ -418,25 +417,14 @@ function bIs(){return`
 <table class="info-table">
   <thead><tr><th>Pojem</th><th>Význam</th><th>V databázi</th></tr></thead>
   <tbody>
-    <tr><td><strong>Entita</strong></td><td>Objekt reálného světa, který nás zajímá</td><td>—</td></tr>
-    <tr><td><strong>Entitní typ</strong></td><td>Množina entit stejného druhu</td><td>Tabulka</td></tr>
-    <tr><td><strong>Instance / záznam</strong></td><td>Konkrétní výskyt entity</td><td>Řádek</td></tr>
-    <tr><td><strong>Atribut</strong></td><td>Vlastnost, kterou evidujeme</td><td>Sloupec (pole)</td></tr>
-    <tr><td><strong>Doména</strong></td><td>Množina přípustných hodnot atributu</td><td>Datový typ + omezení</td></tr>
+    <tr><td><strong>Entitní typ</strong></td><td>Druh věcí, které evidujeme</td><td>Tabulka</td></tr>
+    <tr><td><strong>Entita (záznam)</strong></td><td>Jedna konkrétní věc</td><td>Řádek</td></tr>
+    <tr><td><strong>Atribut</strong></td><td>Vlastnost, kterou evidujeme</td><td>Sloupec</td></tr>
+    <tr><td><strong>Doména</strong></td><td>Povolené hodnoty atributu</td><td>Datový typ</td></tr>
   </tbody>
 </table>
 
-<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Nejčastější záměna:</strong> entitní typ × entita. <em>Student</em> je typ (popis toho, co evidujeme). <em>Jan Novák</em> je entita — jeden konkrétní výskyt. V tabulce odpovídá typ celé tabulce, entita jedinému řádku.</div></div>
-
-<div class="slabel">Jaké problémy IS řeší</div>
-<div class="def-grid">
-  <div class="def-card"><div class="def-term">Potřeba informací</div><div class="def-val">Pro poznání situace, rozhodování a realizaci činností.</div></div>
-  <div class="def-card"><div class="def-term">Složitost</div><div class="def-val">Strukturuje chaos velké organizace a činí ji řiditelnou.</div></div>
-  <div class="def-card"><div class="def-term">Znovupoužitelnost</div><div class="def-val">Jedna centrální databáze místo duplicit v každém oddělení.</div></div>
-  <div class="def-card"><div class="def-term">Automatizace</div><div class="def-val">Zrychluje rutinu a snižuje chybovost.</div></div>
-  <div class="def-card"><div class="def-term">Komunikace</div><div class="def-val">Všechna oddělení pracují s týmiž aktuálními údaji.</div></div>
-  <div class="def-card"><div class="def-term">Bezpečnost</div><div class="def-val">Přístupová práva, šifrování, zálohy, evidence změn.</div></div>
-</div>`;}
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Pozor na záměnu:</strong> <em>Student</em> je entitní typ (celá tabulka). <em>Jan Novák</em> je entita (jeden řádek).</div></div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 2 — TYPY IS
@@ -449,26 +437,26 @@ const PYR=[
 ];
 let pyrSel='tps';
 function bTypy(){return`
-<div class="txt"><p>Informační systémy se liší podle toho, komu slouží. Čím výše v řídicí pyramidě, tím <strong>agregovanější informace</strong>, tím <strong>méně strukturované problémy</strong> a tím větší <strong>neurčitost</strong>.</p></div>
+<div class="txt"><p>Informační systémy se liší podle toho, komu slouží. Čím výš v pyramidě řízení, tím <strong>shrnutější informace</strong> a tím <strong>méně jasné problémy</strong>.</p></div>
 
 <div class="slabel">Klikni na úroveň pyramidy</div>
 <div class="pyr" id="pyrBox"></div>
 <div id="pyrDetail"></div>
 
-<div class="hl hl-blue">${hlIcon('info')}<div><strong>Jak si to zapamatovat:</strong> TPS odpovídá „co se právě stalo“, MIS „jaký je stav“, DSS „co se stane, když…“ a EIS „kam směřujeme“. Směrem nahoru roste míra agregace a klesá množství podrobností.</div></div>
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Jak si to zapamatovat:</strong> TPS = „co se právě stalo“, MIS = „jaký je stav“, DSS = „co se stane, když…“, EIS = „kam směřujeme“.</div></div>
 
-<div class="slabel">Členění IS podle provozovatele</div>
+<div class="slabel">IS podle provozovatele</div>
 <table class="info-table">
-  <thead><tr><th>Typ</th><th>Informace jsou</th><th>Příklad</th></tr></thead>
+  <thead><tr><th>Typ</th><th>Příklad</th></tr></thead>
   <tbody>
-    <tr><td><strong>Podnikový IS (BIS)</strong></td><td>ekonomickým zdrojem</td><td>ERP firmy, IS školy</td></tr>
-    <tr><td><strong>Veřejný IS</strong></td><td>komoditou (zbožím)</td><td>TV, tisk, knihovny, agentury</td></tr>
-    <tr><td><strong>Státní IS (GIS)</strong></td><td>nástrojem veřejné správy</td><td>Registry státní správy</td></tr>
-    <tr><td><strong>Osobní IS</strong></td><td>podporou jednotlivce</td><td>Osobní evidence, poznámky</td></tr>
+    <tr><td><strong>Podnikový</strong></td><td>systém firmy nebo školy</td></tr>
+    <tr><td><strong>Veřejný</strong></td><td>knihovny, tisk, televize</td></tr>
+    <tr><td><strong>Státní</strong></td><td>registry státní správy</td></tr>
+    <tr><td><strong>Osobní</strong></td><td>vlastní poznámky a evidence</td></tr>
   </tbody>
 </table>
 
-<div class="hl hl-green">${hlIcon('check')}<div><strong>ERP, CRM, SCM:</strong> moderní rozšíření transakčních systémů. <strong>ERP</strong> integruje všechny podnikové procesy (výroba, prodej, sklad, finance), <strong>CRM</strong> řídí vztahy se zákazníky, <strong>SCM</strong> dodavatelský řetězec.</div></div>`;}
+<div class="hl hl-green">${hlIcon('check')}<div><strong>ERP</strong> propojuje všechny procesy firmy, <strong>CRM</strong> řeší zákazníky, <strong>SCM</strong> dodavatele.</div></div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 3 — ŽIVOTNÍ CYKLUS
@@ -484,26 +472,23 @@ const FAZE=[
 ];
 let fazeSel=0;
 function bCyklus(){return`
-<div class="txt"><p>Životní cyklus IS je postup, podle kterého systém <strong>vzniká, vyvíjí se a je udržován</strong> — od prvního nápadu až po jeho ukončení. Nejznámějším modelem je <strong>vodopádový model</strong>: etapy na sebe navazují jako voda padající po stupních a výstup jedné je vstupem další.</p></div>
+<div class="txt"><p>Životní cyklus IS popisuje, jak systém <strong>vzniká, běží a je udržován</strong>. Nejznámější je <strong>vodopádový model</strong>: etapy jdou za sebou a výstup jedné je vstupem další.</p></div>
 
 <div class="slabel">Klikni na etapu — zobrazí se její cíl, výstup a rizika</div>
 <div class="cvs-wrap"><canvas id="cyklC" width="600" height="330"></canvas><div class="cvs-hint">Šipky vzad = návrat při zjištění chyby. Čím delší šipka, tím dražší náprava.</div></div>
 <div id="fazeDetail"></div>
 
-<div class="hl hl-red">${hlIcon('warn')}<div><strong>Klíčový princip:</strong> cena opravy chyby roste s tím, jak pozdě se chyba najde. Nedorozumění v zadání by se při rozhovoru vyřešilo za pět minut — po nasazení znamená přepsání modulů, migraci dat a přeškolení uživatelů.</div></div>
+<div class="hl hl-red">${hlIcon('warn')}<div><strong>Hlavní pravidlo:</strong> čím později chybu najdeš, tím dražší je oprava. Nejdražší jsou chyby v zadání.</div></div>
 
-<div class="slabel">Silné a slabé stránky vodopádového modelu</div>
+<div class="slabel">Vodopádový model — plusy a minusy</div>
 <table class="info-table">
   <thead><tr><th>Výhody</th><th>Nevýhody</th></tr></thead>
   <tbody>
-    <tr><td>Jasně definované kroky a výstupy</td><td>Nízká flexibilita při změnách zadání</td></tr>
-    <tr><td>Přehledná dokumentace</td><td>Pozdní zapojení uživatele</td></tr>
-    <tr><td>Dobře se řídí velké projekty</td><td>Riziko „papírového projektu“</td></tr>
-    <tr><td>Kontrola kvality na konci etap</td><td>Chyby se zjistí až se zpožděním</td></tr>
+    <tr><td>Jasné kroky a výstupy</td><td>Špatně se mění zadání</td></tr>
+    <tr><td>Dobrá dokumentace</td><td>Uživatel se zapojí pozdě</td></tr>
+    <tr><td>Dobře se řídí</td><td>Chyby se najdou pozdě</td></tr>
   </tbody>
-</table>
-
-<div class="hl hl-green">${hlIcon('check')}<div><strong>A co agilní vývoj?</strong> Z kritiky pozdního zapojení uživatele vyrostly iterativní a agilní přístupy. Etapy uvnitř jednoho cyklu ale zůstávají stejné — jen probíhají v menším měřítku a opakovaně.</div></div>`;}
+</table>`;}
 
 /* ══════════════════════════════════════
    LEKCE 4 — ZADÁNÍ
@@ -519,28 +504,20 @@ const OTAZKY7=[
 ];
 let ot7Sel=0;
 function bZadani(){return`
-<div class="txt"><p>Cílem zadání je <strong>pochopit potřebu systému a vymezit očekávání</strong>. Vytváří ho zadavatel — tedy ten, kdo systém potřebuje, ne ten, kdo ho bude programovat. Proto smí být psáno běžným jazykem: zadavatel ho musí umět odsouhlasit.</p></div>
+<div class="txt"><p>Zadání říká, <strong>co má systém umět</strong>. Píše ho zadavatel — ten, kdo systém potřebuje. Proto je psané běžnou řečí.</p></div>
 
-<div class="hl hl-blue">${hlIcon('key')}<div><strong>Zadání ≠ analýza.</strong> Zadání říká, <em>co</em> má systém umět z pohledu uživatele. Analýza teprve zkoumá, <em>jak</em> toho dosáhnout.</div></div>
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Zadání ≠ analýza.</strong> Zadání říká <em>co</em>, analýza řeší <em>jak</em>.</div></div>
 
 <div class="slabel">Funkční požadavky — sedm otázek, na které musí zadání odpovědět</div>
 <div class="topo-row" id="ot7Row"></div>
 <div id="ot7Detail"></div>
 
-<div class="slabel">Nefunkční požadavky — jak dobře má systém pracovat</div>
-<div class="txt"><p>Zatímco funkční požadavky říkají <em>co</em>, nefunkční popisují <strong>kvalitu a podmínky fungování</strong>. Rozdíl je vidět na dvojici vět:</p></div>
+<div class="slabel">Funkční × nefunkční požadavky</div>
+<div class="txt"><p>Funkční požadavek říká, <em>co</em> systém dělá. Nefunkční říká, <em>jak dobře</em> — rychlost, spolehlivost, cena, termín.</p></div>
 <div class="tbl-pair">
   <div class="def-card" style="background:var(--blue-50)"><div class="def-term">Funkční požadavek</div><div class="def-val">„Systém zobrazí seznam studentů.“</div></div>
   <div class="def-card" style="background:var(--amber-bg);border-color:var(--amber-b)"><div class="def-term" style="color:var(--amber-m)">Nefunkční požadavek</div><div class="def-val">„Systém zobrazí seznam 10 000 studentů do 2 sekund.“</div></div>
 </div>
-<table class="info-table">
-  <thead><tr><th>Kategorie</th><th>Obsah</th></tr></thead>
-  <tbody>
-    <tr><td><strong>Na výsledný program</strong></td><td>Efektivita, spolehlivost, přenositelnost, použitelnost</td></tr>
-    <tr><td><strong>Na způsob řešení</strong></td><td>Metody, standardy, dokumentace, programovací jazyk, prostředí</td></tr>
-    <tr><td><strong>Vnější</strong></td><td>Cena, termíny, bezpečnost, legislativa</td></tr>
-  </tbody>
-</table>
 
 <div class="slabel">Formalizace zadání — tři modely vnějšího chování</div>
 <div class="svg-box">
@@ -593,7 +570,7 @@ function bZadani(){return`
 </svg>
 </div>
 
-<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Aktér × uživatel.</strong> <strong>Aktér</strong> je role v okolí systému, která s ním komunikuje — může to být i jiný systém. Kreslí se do kontextového diagramu. <strong>Uživatel</strong> je člověk, který se systémem přímo pracuje; kreslí se do modelu jednání. Nakladatel je aktér, knihovník uživatel.</div></div>`;}
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Aktér × uživatel.</strong> Aktér je kdokoli v okolí systému, i jiný systém (nakladatel). Uživatel je člověk, který se systémem přímo pracuje (knihovník).</div></div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 5 — ER MODEL
@@ -618,7 +595,7 @@ const KARD=[
 let kardSel='11', dekompOn=false;
 
 function bEr(){return`
-<div class="txt"><p>Výsledkem datové analýzy je <strong>konceptuální schéma</strong>. Zpřesňuje zadání tak, aby bylo úplné, jednoznačné, přesné a bezesporné. Data jsou tou částí systému, která přežije nejdéle — funkce i rozhraní se mění, jednou zvolená struktura dat provází systém po celý jeho život.</p></div>
+<div class="txt"><p>Výsledkem datové analýzy je <strong>konceptuální schéma</strong> — přesný popis toho, jaká data systém ukládá a jak spolu souvisejí. Data vydrží v systému nejdéle, proto je důležité je navrhnout dobře.</p></div>
 
 <div class="slabel">Notace ER diagramu</div>
 <div class="svg-box">
@@ -646,54 +623,39 @@ function bEr(){return`
   <button class="btn btn-p" id="dekompBtn" onclick="toggleDekomp()">Provést dekompozici ▶</button>
 </div>
 
-<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Dekompozice M:N.</strong> Relační systémy neumějí vztah M:N vyjádřit přímo. Mezi oba entitní typy se vloží <strong>nový entitní typ</strong> a původní vztah se nahradí dvěma vztahy 1:N směřujícími do něj. Nový typ přitom nebývá umělý — obvykle odpovídá něčemu skutečnému a má vlastní atributy (u Výuky třeba semestr nebo počet hodin).</div></div>
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Vztah M:N</strong> databáze neumí uložit přímo. Mezi obě entity se vloží nová entita a vzniknou dva vztahy 1:N.</div></div>
 
-<div class="slabel">Klíče a atributy</div>
+<div class="slabel">Klíče</div>
 <div class="def-grid">
-  <div class="def-card"><div class="def-term">Doména atributu</div><div class="def-val">Množina hodnot, kterých může atribut nabývat. Např. celá čísla 0–99 999.</div></div>
-  <div class="def-card"><div class="def-term">Kandidátní klíč</div><div class="def-val">Atribut nebo množina atributů jednoznačně určující entitu. Může jich být více.</div></div>
-  <div class="def-card"><div class="def-term">Primární klíč</div><div class="def-val">Jeden zvolený kandidátní klíč používaný jako identifikátor.</div></div>
-  <div class="def-card"><div class="def-term">Primární atribut</div><div class="def-val">Atribut patřící některému klíči.</div></div>
-  <div class="def-card"><div class="def-term">Sekundární atribut</div><div class="def-val">Atribut nepatřící žádnému klíči.</div></div>
-  <div class="def-card"><div class="def-term">Cizí klíč</div><div class="def-val">Atribut odkazující na primární klíč jiné tabulky — realizuje vztah.</div></div>
+  <div class="def-card"><div class="def-term">Kandidátní klíč</div><div class="def-val">Atribut, který jednoznačně určí záznam. Může jich být víc.</div></div>
+  <div class="def-card"><div class="def-term">Primární klíč</div><div class="def-val">Jeden vybraný kandidátní klíč.</div></div>
+  <div class="def-card"><div class="def-term">Cizí klíč</div><div class="def-val">Odkaz na primární klíč jiné tabulky. Tím vzniká vztah.</div></div>
 </div>
 
-<div class="code"><span class="c">// Lineární textový zápis — vede se souběžně s diagramem</span>
+<div class="code"><span class="c">// Textový zápis entit — zvýrazněný atribut = primární klíč</span>
 Zaměstnanec (<span class="k">RČ</span>, jméno, příjmení, adresa, funkce)
 Oddělení (<span class="k">ido</span>, název, adresa, zaměření)
-PATŘÍ_DO_ODDĚLENÍ (Zaměstnanec, Oddělení)
-
-<span class="c">// podtržený / zvýrazněný atribut = primární klíč</span></div>
-
-<div class="hl hl-blue">${hlIcon('key')}<div><strong>Úplné konceptuální schéma</strong> obsahuje: lineární seznam entitních typů s klíči, seznam vztahů, ER diagram, jeho dekompozici, datový slovník a seznam integritních omezení.</div></div>
+PATŘÍ_DO_ODDĚLENÍ (Zaměstnanec, Oddělení)</div>
 
 <div class="slabel">Datový slovník</div>
-<div class="txt"><p>Datový slovník shrnuje všechny informace o atributech na jednom místě. Pro každý atribut uvádí datový typ, délku, zda patří do klíče, zda smí zůstat nevyplněný, zda je indexován, jaká integritní omezení se na něj vztahují a co znamená. Je to dokument, ze kterého se <strong>přímo zakládá databáze</strong>.</p></div>
+<div class="txt"><p>Datový slovník popisuje každý atribut: typ, délku, jestli je klíč, jestli smí být prázdný a co znamená. Podle něj se pak zakládá databáze.</p></div>
 <table class="info-table tight">
-  <thead><tr><th>Název</th><th>Typ</th><th>Délka</th><th>Klíč</th><th>Null</th><th>Index</th><th>IO</th><th>Význam</th></tr></thead>
+  <thead><tr><th>Název</th><th>Typ</th><th>Délka</th><th>Klíč</th><th>Null</th></tr></thead>
   <tbody>
-    <tr><td><strong>rč</strong></td><td>char</td><td>10</td><td>A</td><td>N</td><td>A</td><td>*1</td><td></td></tr>
-    <tr><td>jméno</td><td>char</td><td>30</td><td>N</td><td>N</td><td>A</td><td></td><td>*2</td></tr>
-    <tr><td>adresa</td><td>char</td><td>250</td><td>N</td><td>A</td><td>N</td><td></td><td></td></tr>
-    <tr><td>funkce</td><td>char</td><td>30</td><td>N</td><td>A</td><td>N</td><td></td><td></td></tr>
-    <tr><td>plat</td><td>decimal</td><td>10,2</td><td>N</td><td>A</td><td>N</td><td>≥ 0</td><td></td></tr>
-    <tr><td>datumNar</td><td>date</td><td>—</td><td>N</td><td>N</td><td>N</td><td>*3</td><td></td></tr>
-    <tr><td>místoNar</td><td>char</td><td>30</td><td>N</td><td>A</td><td>N</td><td></td><td></td></tr>
+    <tr><td><strong>rč</strong></td><td>char</td><td>10</td><td>A</td><td>N</td></tr>
+    <tr><td>jméno</td><td>char</td><td>30</td><td>N</td><td>N</td></tr>
+    <tr><td>plat</td><td>decimal</td><td>10,2</td><td>N</td><td>A</td></tr>
   </tbody>
 </table>
-<div class="txt" style="font-size:12.5px;color:var(--sec);margin-bottom:1rem"><p>*1 tvar 1122334444, kde 11 je poslední dvojčíslí roku &nbsp;·&nbsp; *2 příjmení, křestní jména, tituly &nbsp;·&nbsp; *3 musí souhlasit s údaji v rodném čísle</p></div>
-<div class="hl hl-amber">${hlIcon('warn')}<div>Sloupec <strong>Význam</strong> bývá podceňován, ale je to jediné místo, kde se zaznamená, že atribut „jméno“ obsahuje příjmení, křestní jména i tituly dohromady. Bez toho bude za dva roky každý programátor hádat.</div></div>
 
-<div class="slabel">Integritní omezení — podmínky, které databáze sama hlídá</div>
+<div class="slabel">Integritní omezení — pravidla, která databáze sama hlídá</div>
 <table class="info-table tight">
-  <thead><tr><th>Typ omezení</th><th>Příklad</th></tr></thead>
+  <thead><tr><th>Omezení</th><th>Příklad</th></tr></thead>
   <tbody>
     <tr><td>Rozsah hodnot</td><td>plat &gt; 0</td></tr>
-    <tr><td>Formát dat</td><td>PSČ = řetězec 5 číslic bez mezer</td></tr>
-    <tr><td>Jedinečnost</td><td>žádní dva studenti nemají stejný login</td></tr>
-    <tr><td>Povolení NULL</td><td>e-mail smí zůstat nevyplněný</td></tr>
-    <tr><td>Kardinalita a povinnost</td><td>každý učitel patří pod katedru</td></tr>
-    <tr><td>Existence cizích klíčů</td><td>nelze zapsat výpůjčku neexistujícímu čtenáři</td></tr>
+    <tr><td>Jedinečnost</td><td>dva studenti nemají stejný login</td></tr>
+    <tr><td>Povinnost</td><td>každý učitel patří pod katedru</td></tr>
+    <tr><td>Existence cizího klíče</td><td>nejde půjčit knihu neexistujícímu čtenáři</td></tr>
   </tbody>
 </table>`;}
 
@@ -708,7 +670,7 @@ const DFD_URV=[
 ];
 let dfdSel=1;
 function bDfd(){return`
-<div class="txt"><p>Konceptuální schéma řeklo, <em>jaká data</em> systém uchovává. Funkční analýza navazuje otázkou, <strong>co se s daty děje</strong>. Jejím nástrojem je <strong>diagram datových toků (DFD)</strong>.</p></div>
+<div class="txt"><p>Datová analýza řekla, <em>jaká data</em> máme. Funkční analýza řeší, <strong>co se s nimi děje</strong>. Kreslí se do <strong>diagramu datových toků (DFD)</strong>.</p></div>
 
 <div class="slabel">Čtyři prvky DFD</div>
 <div class="svg-box">
@@ -735,35 +697,17 @@ function bDfd(){return`
 <div class="cvs-wrap"><canvas id="dfdC" width="600" height="290"></canvas><div class="cvs-hint">Postupný rozklad od celku k detailu — každá úroveň zpřesňuje jeden proces té předchozí</div></div>
 <div id="dfdDetail"></div>
 
-<div class="hl hl-blue">${hlIcon('info')}<div><strong>Datové paměti v DFD nejsou nic jiného</strong> než entitní typy z konceptuálního schématu. Datová a funkční analýza popisují tentýž systém — jen z jiného úhlu.</div></div>
+<div class="hl hl-blue">${hlIcon('info')}<div><strong>Datové paměti v DFD</strong> jsou totéž co entitní typy v ER modelu — jen z jiného pohledu.</div></div>
 
-<div class="slabel">Minispecifikace — algoritmus elementární funkce</div>
-<div class="txt"><p>Rozkladem se dostaneme k funkcím, které už nemá smysl dělit. Stále ale nevíme, co se uvnitř kroužku odehrává. To popisuje <strong>minispecifikace</strong>.</p></div>
-<table class="info-table tight">
-  <thead><tr><th>Jazyk zápisu</th><th>Hodnocení</th></tr></thead>
-  <tbody>
-    <tr><td>Programovací jazyk</td><td>Příliš podrobný — zadavatel mu nerozumí, nemůže odsouhlasit</td></tr>
-    <tr><td>Vývojový diagram</td><td>Neumožňuje popsat vše dostatečně přesně</td></tr>
-    <tr><td><strong>Strukturovaný jazyk</strong></td><td><strong>Používá se</strong> — čeština s vyznačenými cykly, podmínkami a kontrolami</td></tr>
-  </tbody>
-</table>
-<div class="code"><span class="c">Minispecifikace 1.1 — Příjem do skladu</span>
-1. Suma = 0
-2. Pro všechen přijatý materiál na faktuře dodavatele proveď
-   3. zobraz seznam karet ze Sklad — atributy: karta, název, cidod, cenj, mnoz
-   4. <span class="s">uživatel</span> vybere kartu
-   5. zapamatuj Sklad.karta, Sklad.nazev, Sklad.cenj a Sklad.mnoz
-   6. zobraz formulář příjmu pro vybranou kartu
-        mnoz_prij : <span class="k">&gt; 0</span>
-        cizakaz   : <span class="k">kontrola na existenci v Zakázka nebo NULL</span>
-   7. <span class="s">uživatel</span> vyplní formulář pro přijímaný materiál
-   8. vypočti Sklad.mnoz = Sklad.mnoz + mnoz_prij
-      Suma = Suma + mnoz_prij * cen_prij
-   9. zapiš vyplněný formulář jako nový záznam do Pohyb
-  10. modifikuj v záznamu Sklad.karta hodnoty mnoz a cenj
-11. Konec cyklu pro jeden materiál
-12. Vypiš pro kontrolu seznam materiálu s celkovou cenou faktury</div>
-<div class="hl hl-green">${hlIcon('check')}<div><strong>Všimni si kontrol.</strong> Právě v minispecifikaci se rozhoduje, zda se do databáze dostanou nesmyslná data. Zápis také rozlišuje kroky prováděné systémem a kroky, v nichž jedná uživatel — což bude důležité při transakční analýze.</div></div>`;}
+<div class="slabel">Minispecifikace</div>
+<div class="txt"><p>Když už funkci nejde dál dělit, popíše se její postup <strong>minispecifikací</strong>. Píše se <strong>strukturovanou češtinou</strong> — s vyznačenými podmínkami, cykly a kontrolami.</p></div>
+<div class="code"><span class="c">Minispecifikace 1.1 — Příjem do skladu (zkráceno)</span>
+1. Pro každý materiál na faktuře proveď
+   2. <span class="s">uživatel</span> vybere kartu ze Sklad
+   3. <span class="s">uživatel</span> zadá přijaté množství  <span class="k">kontrola: &gt; 0</span>
+   4. Sklad.mnoz = Sklad.mnoz + mnoz_prij
+   5. zapiš nový záznam do Pohyb
+6. Konec cyklu</div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 7 — STD
@@ -791,16 +735,14 @@ const PRECH=[
 ];
 let stdCur='start', stdLog=[];
 function bStd(){return`
-<div class="txt"><p>Funkční analýza popisuje, <em>co</em> systém umí. Neříká však, <strong>kdy to smí udělat</strong>. Knihu nelze vrátit, pokud nebyla půjčena; uzávěrku nelze spustit uprostřed provozu. Tím se zabývá dynamická analýza a její <strong>stavový diagram (STD)</strong>.</p></div>
+<div class="txt"><p>Funkční analýza říká, <em>co</em> systém umí. Dynamická analýza řeší, <strong>kdy to smí udělat</strong>. Knihu nejde vrátit, když nebyla půjčená. Kreslí se do <strong>stavového diagramu (STD)</strong>.</p></div>
 
 <div class="slabel">Notace</div>
 <div class="def-grid">
-  <div class="def-card"><div class="def-term">Stav</div><div class="def-val">Situace, ve které se entita nachází. Kreslí se jako obdélník.</div></div>
-  <div class="def-card"><div class="def-term">Přechod</div><div class="def-val">Šipka. Nad ní podmínka (událost), pod ní akce, která se provede.</div></div>
-  <div class="def-card"><div class="def-term">Entry</div><div class="def-val">Činnost prováděná po každém vstupu do stavu.</div></div>
-  <div class="def-card"><div class="def-term">Exit</div><div class="def-val">Činnost prováděná před každým opuštěním stavu.</div></div>
-  <div class="def-card"><div class="def-term">Do</div><div class="def-val">Aktivita trvání stavu — stav může skončit „sám od sebe“.</div></div>
-  <div class="def-card"><div class="def-term">Vnitřní přechod</div><div class="def-val">Zpracování události beze změny stavu. Zapisuje se dovnitř stavu.</div></div>
+  <div class="def-card"><div class="def-term">Stav</div><div class="def-val">Situace, ve které se entita nachází. Obdélník.</div></div>
+  <div class="def-card"><div class="def-term">Přechod</div><div class="def-val">Šipka. Nad ní událost, pod ní akce.</div></div>
+  <div class="def-card"><div class="def-term">Entry</div><div class="def-val">Provede se při vstupu do stavu.</div></div>
+  <div class="def-card"><div class="def-term">Exit</div><div class="def-val">Provede se při odchodu ze stavu.</div></div>
 </div>
 
 <div class="slabel">Simulace — životní cyklus exempláře knihy</div>
@@ -810,9 +752,7 @@ function bStd(){return`
 <div class="cvs-wrap"><canvas id="stdC" width="600" height="310"></canvas><div class="cvs-hint">Zelený stav = aktuální · šedé přechody nejsou z tohoto stavu dostupné</div></div>
 <div class="brow"><button class="btn btn-g" onclick="stdReset()">↺ Začít znovu</button></div>
 
-<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Proč se to vyplatí kreslit:</strong> diagram odhalí otázky, které ze seznamu funkcí nejsou vidět. Co se stane s poškozenou knihou? Lze půjčit knihu, která je v opravě? Co s výpůjčkou, když čtenář knihu ztratí? Na tyto otázky musí zadavatel odpovědět dřív, než se začne programovat.</div></div>
-
-<div class="hl hl-blue">${hlIcon('info')}<div><strong>Návaznost na testování:</strong> stavový diagram je podkladem pro testování podle struktury stavů — kontroluje se, že systém hlídá nepřípustné přechody.</div></div>`;}
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Proč ho kreslit:</strong> odhalí otázky, na které se jinak zapomene. Jde půjčit knihu v opravě? Co když ji čtenář ztratí?</div></div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 8 — RELAČNÍ MODEL A ALGEBRA
@@ -831,25 +771,25 @@ const ZAPIS=[
 ];
 
 function bRel(){return`
-<div class="txt"><p>Konceptuální schéma je nezávislé na technologii. <strong>Relační model</strong> je konkrétní způsob, jak je uložit: data se ukládají do <strong>tabulek (relací)</strong>, vztahy se realizují <strong>cizími klíči</strong>.</p></div>
+<div class="txt"><p><strong>Relační model</strong> ukládá data do <strong>tabulek (relací)</strong>. Vztahy mezi nimi tvoří <strong>cizí klíče</strong>.</p></div>
 
 <div class="slabel">Převod ER na tabulky — tři pravidla</div>
 <table class="info-table">
-  <thead><tr><th>Kardinalita</th><th>Realizace v relačním modelu</th></tr></thead>
+  <thead><tr><th>Kardinalita</th><th>Co udělat</th></tr></thead>
   <tbody>
-    <tr><td><strong>1:1</strong></td><td>Cizí klíč se vloží do jedné z tabulek — obvykle tam, kde je členství povinné</td></tr>
-    <tr><td><strong>1:N</strong></td><td>Cizí klíč se vloží do tabulky na straně <strong>N</strong></td></tr>
-    <tr><td><strong>M:N</strong></td><td>Vytvoří se <strong>průsečíková tabulka</strong> s cizími klíči obou stran</td></tr>
+    <tr><td><strong>1:1</strong></td><td>Cizí klíč do jedné z tabulek</td></tr>
+    <tr><td><strong>1:N</strong></td><td>Cizí klíč do tabulky na straně <strong>N</strong></td></tr>
+    <tr><td><strong>M:N</strong></td><td>Nová <strong>průsečíková tabulka</strong> s cizími klíči obou stran</td></tr>
   </tbody>
 </table>
 
-<div class="hl hl-blue">${hlIcon('key')}<div><strong>Vlastnosti databázové relace:</strong> každý řádek je jedinečný, na pořadí řádků ani sloupců nezáleží, každá hodnota je atomická (nedělitelná) a všechny hodnoty ve sloupci pocházejí z téže domény.</div></div>
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Pravidla tabulky:</strong> řádky se neopakují, na pořadí nezáleží a v každé buňce je jedna hodnota.</div></div>
 
 <div class="slabel">Relační algebra — vyber operaci a sleduj výsledek</div>
-<div class="txt"><p>Každý dotaz níže je skutečně vyhodnocen nad tabulkami vpravo. Klikni na kartu a porovnej vstupní relace s výsledkem.</p></div>
+<div class="txt"><p>Klikni na kartu a porovnej vstupní tabulky s výsledkem.</p></div>
 <div id="raBox"></div>
 
-<div class="hl hl-green">${hlIcon('check')}<div><strong>Proč relační algebra?</strong> Je teoretickým základem jazyka SQL. Každý dotaz SELECT lze rozložit na kombinaci selekce, projekce a spojení — a databázový optimalizátor přesně to dělá, když hledá nejrychlejší způsob vykonání dotazu.</div></div>
+<div class="hl hl-green">${hlIcon('check')}<div><strong>Selekce</strong> vybírá řádky, <strong>projekce</strong> sloupce, <strong>spojení</strong> propojí tabulky. Na tom stojí SQL.</div></div>
 
 <div class="slabel">Totéž v SQL</div>
 <div class="code"><span class="c">-- Selekce: vyber řádky</span>
@@ -862,7 +802,7 @@ function bRel(){return`
 <span class="k">SELECT</span> s.jmeno, z.kurz
 <span class="k">FROM</span> Student s <span class="k">JOIN</span> Zapis z <span class="k">ON</span> s.id = z.id;</div>
 
-<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Pozor na spojení:</strong> studenti bez zápisu (Svoboda) se do výsledku běžného spojení nedostanou vůbec. Pokud je potřebujeme zachovat, musíme použít vnější spojení (LEFT JOIN).</div></div>`;}
+<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Pozor:</strong> student bez zápisu (Svoboda) se do výsledku spojení nedostane. Když ho chceš vidět, použij LEFT JOIN.</div></div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 9 — NORMALIZACE
@@ -884,16 +824,16 @@ const NF_KROKY=[
 let nfKrok=0;
 
 function bNorm(){return`
-<div class="txt"><p>Špatně navržené schéma vypadá zpočátku pohodlně — všechno v jedné tabulce. Problémy se ukážou až při používání v podobě <strong>anomálií</strong>.</p></div>
+<div class="txt"><p>Když je všechno v jedné tabulce, data se opakují a vznikají <strong>anomálie</strong>. Normalizace tabulku rozdělí tak, aby se to nedělo.</p></div>
 
 <div class="slabel">Tři druhy anomálií</div>
 <div class="def-grid">
-  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Vkládání</div><div class="def-val">Nelze zapsat novou katedru, dokud na ni nemáme aspoň jednoho studenta.</div></div>
-  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Mazání</div><div class="def-val">Smazáním posledního studenta katedry ztratíme i informaci o katedře samotné.</div></div>
-  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Aktualizace</div><div class="def-val">Změna vedoucího katedry vyžaduje úpravu všech řádků — snadno vznikne nekonzistence.</div></div>
+  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Vkládání</div><div class="def-val">Novou katedru nejde zapsat, dokud nemá studenta.</div></div>
+  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Mazání</div><div class="def-val">Se smazáním posledního studenta zmizí i katedra.</div></div>
+  <div class="def-card" style="background:var(--red-bg);border-color:var(--red-b)"><div class="def-term" style="color:var(--red-m)">Aktualizace</div><div class="def-val">Změnu vedoucího je nutné opravit v mnoha řádcích.</div></div>
 </div>
 
-<div class="hl hl-blue">${hlIcon('key')}<div><strong>Funkční závislost A → B</strong> znamená: znám-li hodnotu A, je hodnota B jednoznačně určena. Rodné číslo → jméno platí (jedno rč patří jedné osobě). Opačně to neplatí — jménu odpovídá více osob. Normalizace je systematické odstraňování nevhodných funkčních závislostí.</div></div>
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Funkční závislost A → B:</strong> když znáš A, znáš i B. Rodné číslo → jméno platí, opačně ne.</div></div>
 
 <div class="slabel">Postupná normalizace — projdi krok za krokem</div>
 <div class="spills" id="nfPills"></div>
@@ -908,16 +848,14 @@ function bNorm(){return`
 <table class="info-table">
   <thead><tr><th>Forma</th><th>Podmínka</th></tr></thead>
   <tbody>
-    <tr><td><strong>1NF</strong></td><td>Všechny atributy jsou atomické</td></tr>
-    <tr><td><strong>2NF</strong></td><td>1NF + každý neklíčový atribut závisí na <em>celém</em> klíči</td></tr>
-    <tr><td><strong>3NF</strong></td><td>2NF + žádná tranzitivní závislost neklíčových atributů</td></tr>
-    <tr><td><strong>BCNF</strong></td><td>Každý determinant je kandidátním klíčem (přísnější než 3NF)</td></tr>
+    <tr><td><strong>1NF</strong></td><td>V každé buňce je jedna hodnota</td></tr>
+    <tr><td><strong>2NF</strong></td><td>1NF + vše závisí na <em>celém</em> klíči</td></tr>
+    <tr><td><strong>3NF</strong></td><td>2NF + nic nezávisí na klíči jen přes jiný atribut</td></tr>
+    <tr><td><strong>BCNF</strong></td><td>Každý determinant je kandidátní klíč</td></tr>
   </tbody>
 </table>
 
-<div class="hl hl-green">${hlIcon('check')}<div><strong>Armstrongovy axiomy</strong> — pravidla pro odvozování závislostí: <strong>reflexivita</strong> (je-li B ⊆ A, pak A → B), <strong>rozšíření</strong> (A → B, pak AC → BC) a <strong>tranzitivita</strong> (A → B a B → C, pak A → C). Z nich se odvozuje uzávěr atributů a určují klíče schématu.</div></div>
-
-<div class="hl hl-amber">${hlIcon('warn')}<div><strong>Kdy nenormalizovat?</strong> Vyšší normální forma znamená více tabulek a více spojení při dotazech. U datových skladů a systémů pro analýzy se proto někdy vědomě denormalizuje kvůli rychlosti čtení. V transakčních systémech je ale 3NF standardem.</div></div>`;}
+<div class="hl hl-green">${hlIcon('check')}<div><strong>Armstrongovy axiomy:</strong> <strong>reflexivita</strong> (B ⊆ A ⇒ A → B), <strong>rozšíření</strong> (A → B ⇒ AC → BC), <strong>tranzitivita</strong> (A → B a B → C ⇒ A → C).</div></div>`;}
 
 /* ══════════════════════════════════════
    LEKCE 10 — IMPLEMENTACE A PROVOZ
@@ -929,54 +867,42 @@ const CHYBOVKY=[
 ];
 let chybSel=0;
 function bImpl(){return`
-<div class="txt"><p>Sebelépe navržený systém je k ničemu, pokud s ním uživatelé nedokážou nebo nechtějí pracovat. Návrh komunikace <strong>není kosmetika na konci projektu</strong>, ale samostatná část návrhu s vlastními pravidly.</p></div>
+<div class="txt"><p>Systém je k ničemu, když s ním lidé neumějí nebo nechtějí pracovat. Proto se rozhraní navrhuje pečlivě, ne až na konci.</p></div>
 
-<div class="slabel">Pravidla návrhu komunikace člověk — počítač</div>
+<div class="slabel">Pravidla dobrého rozhraní</div>
 <div class="def-grid">
-  <div class="def-card"><div class="def-term">Prvořadost uživatele</div><div class="def-val">Formuláře se navrhují tak, jak je potřebuje uživatel, ne jak se hodí programátorovi.</div></div>
-  <div class="def-card"><div class="def-term">Jednotnost</div><div class="def-val">Obdobné situace se řeší obdobně. Uživatel pak odhadne chování i části, kterou nepoužil.</div></div>
-  <div class="def-card"><div class="def-term">Vlídnost</div><div class="def-val">Zprávy pozitivní, ne negativní. Humor do systému nepatří — opakovaný vtip přestává být vtipem.</div></div>
-  <div class="def-card"><div class="def-term">Respekt ke kontextu</div><div class="def-val">Nepředpokládáme, že si uživatel pamatuje předchozí krok.</div></div>
-  <div class="def-card"><div class="def-term">Minimalizace vstupu</div><div class="def-val">Co nejméně kliknutí a úderů na klávesnici — méně překlepů, rychlejší práce.</div></div>
-  <div class="def-card"><div class="def-term">Zpětná vazba</div><div class="def-val">Signál o přijetí každého požadavku, aby uživatel věděl, že se něco děje.</div></div>
+  <div class="def-card"><div class="def-term">Uživatel na prvním místě</div><div class="def-val">Formuláře podle potřeb uživatele, ne programátora.</div></div>
+  <div class="def-card"><div class="def-term">Jednotnost</div><div class="def-val">Podobné věci fungují podobně.</div></div>
+  <div class="def-card"><div class="def-term">Méně klikání</div><div class="def-val">Co nejméně kroků a psaní.</div></div>
+  <div class="def-card"><div class="def-term">Zpětná vazba</div><div class="def-val">Uživatel vždy ví, že se něco děje.</div></div>
 </div>
 
 <div class="slabel">Chybová hlášení — porovnej špatné a dobré</div>
 <div class="topo-row" id="chybRow"></div>
 <div id="chybBox"></div>
 
-<div class="hl hl-red">${hlIcon('warn')}<div><strong>Zásady pro chyby:</strong> systém musí přijmout jakákoli data a nesmí havarovat. Chyby <strong>neopravuje automaticky</strong> — uživatel se musí dozvědět, co se stalo. Závažná rozhodnutí si nechá opakovaně potvrdit. A zaznamenává chyby do souboru chyb, což je jediný spolehlivý zdroj informací o tom, kde uživatelé skutečně narážejí.</div></div>
+<div class="hl hl-red">${hlIcon('warn')}<div><strong>Zásady pro chyby:</strong> systém nesmí spadnout, chyby sám neopravuje, ale řekne uživateli, co se stalo. Důležité kroky si nechá potvrdit.</div></div>
 
-<div class="slabel">Návrh implementace</div>
-<table class="info-table">
-  <thead><tr><th>Část</th><th>Co obsahuje</th></tr></thead>
-  <tbody>
-    <tr><td><strong>Systémový návrh</strong></td><td>Koncepce řešení, architektura, volba SŘBD, dělení na subsystémy, přidělení HW a SW, zařazení do kontextu ostatních IS</td></tr>
-    <tr><td><strong>Objektový návrh</strong></td><td>Upřesnění algoritmů, optimalizace přístupů k datům, indexová a transakční analýza, zabezpečení mezního provozu, systémové funkce</td></tr>
-  </tbody>
-</table>
-
-<div class="hl hl-blue">${hlIcon('key')}<div><strong>Transakce</strong> je základní logická jednotka zpracování, která musí proběhnout <strong>celá, nebo se vrátit na začátek</strong>. Klíčové pravidlo: <strong>do transakce nesmí být zahrnut vstup uživatele</strong> — jinak zůstanou data zamčená po celou dobu, kdy si uživatel odskočí na oběd.</div></div>
+<div class="hl hl-blue">${hlIcon('key')}<div><strong>Transakce</strong> proběhne buď celá, nebo vůbec. Nesmí v ní být čekání na uživatele — jinak zůstanou data zamčená.</div></div>
 
 <div class="slabel">Testování — tři pojmy, které se pletou</div>
 <div class="def-grid">
-  <div class="def-card"><div class="def-term">Validace</div><div class="def-val">Produkt odpovídá <strong>představám uživatele</strong>. Stavíme správný systém?</div></div>
-  <div class="def-card"><div class="def-term">Verifikace</div><div class="def-val">Produkt odpovídá <strong>odsouhlasené specifikaci</strong>. Stavíme systém správně?</div></div>
-  <div class="def-card"><div class="def-term">Testování</div><div class="def-val">Ověřování programu pomocí <strong>konečné sady</strong> příkladů.</div></div>
+  <div class="def-card"><div class="def-term">Validace</div><div class="def-val">Odpovídá to <strong>představě uživatele</strong>? Stavíme správný systém?</div></div>
+  <div class="def-card"><div class="def-term">Verifikace</div><div class="def-val">Odpovídá to <strong>specifikaci</strong>? Stavíme systém správně?</div></div>
+  <div class="def-card"><div class="def-term">Testování</div><div class="def-val">Zkoušení programu na <strong>konečném počtu</strong> příkladů.</div></div>
 </div>
-<div class="hl hl-amber">${hlIcon('warn')}<div>Slovo „konečné“ je podstatné: testováním <strong>nelze dokázat, že systém chyby nemá</strong> — lze jen ukázat, že na vyzkoušených případech chybu nevykazuje. Techniky: podle struktury dat, podle struktury programu (všechny větve) a podle struktury stavů (nepřípustné přechody).</div></div>
+<div class="hl hl-amber">${hlIcon('warn')}<div>Testy nikdy nedokážou, že program nemá chyby. Ukážou jen, že vyzkoušené případy fungují.</div></div>
 
-<div class="slabel">Provoz a údržba — nejdelší etapa životního cyklu</div>
+<div class="slabel">Provoz a údržba — nejdelší etapa</div>
 <table class="info-table">
-  <thead><tr><th>Kategorie údržby</th><th>Náplň</th></tr></thead>
+  <thead><tr><th>Údržba</th><th>Co řeší</th></tr></thead>
   <tbody>
-    <tr><td><strong>Opravárenská</strong></td><td>Odstranění nalezených chyb</td></tr>
-    <tr><td><strong>Adaptivní</strong></td><td>Přizpůsobení změnám prostředí (nový hardware, nový OS)</td></tr>
-    <tr><td><strong>Preventivní</strong></td><td>Zlepšení udržovatelnosti (aktualizace dokumentace, úprava kódu)</td></tr>
-    <tr><td><strong>Zdokonalovací</strong></td><td>Reakce na nové nebo změněné požadavky uživatele</td></tr>
+    <tr><td><strong>Opravárenská</strong></td><td>opravuje chyby</td></tr>
+    <tr><td><strong>Adaptivní</strong></td><td>přizpůsobuje novému HW nebo OS</td></tr>
+    <tr><td><strong>Preventivní</strong></td><td>zlepšuje kód a dokumentaci</td></tr>
+    <tr><td><strong>Zdokonalovací</strong></td><td>přidává nové požadavky</td></tr>
   </tbody>
-</table>
-<div class="hl hl-green">${hlIcon('check')}<div><strong>Kruh se uzavírá.</strong> Pouze první kategorie je opravou chyby — zbylé tři jsou důsledkem toho, že se mění svět kolem systému. Požadavky nakonec přerostou možnosti stávajícího řešení a objeví se myšlenka na systém nový. Životní cyklus začíná znovu od zadání.</div></div>`;}
+</table>`;}
 
 /* ══════════════════════════════════════
    POMOCNÉ KRESLENÍ
@@ -1996,7 +1922,7 @@ function renderComplete(){
         <div class="complete-score">${sc} / ${QS.length}</div>
         <div class="complete-sub">
           V závěrečném kvízu jsi získal ${sc} z ${QS.length} bodů.<br>
-          V kontrolních otázkách ${chkOk} z ${chkTotal} správně.<br><br>
+          <br>
           Prošel jsi celou cestu od pojmu informačního systému přes zadání, datovou, funkční
           i dynamickou analýzu až po relační model, normalizaci a provoz. Gratuluji!
         </div>
